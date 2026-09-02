@@ -4,30 +4,24 @@
 
 # 🐴 Ponys Salvajes | Finder de Conciertos 🎸
 
-**Encuentra, descubre y no te pierdas ni un solo concierto.**
+**Galopa hacia la música: La plataforma que conecta tus gustos con el escenario**
 
 ## Qué es esto
 
 **Finder de Conciertos** es una app para buscar, descubrir y dar seguimiento
 a conciertos y eventos musicales.
 
-> Heads up: el proyecto acaba de arrancar. Este README se va actualizando
-> en cada sprint para reflejar el estado real del trabajo — si algo aquí ya
-> no aplica, probablemente sea porque avanzamos.
-
-<br>
-
 ## Equipo 🐴
 
 Equipo **Ponys Salvajes** — Ingeniería en Software
 
-- García Villa Nelson Osmar | #322190357
+- García Villa Nelson Osmar | 322190357
 - [Nombre Apellido]
 - [Nombre Apellido]
 - [Nombre Apellido]
 - [Nombre Apellido]
 
-<br>
+
 
 ## Features
 
