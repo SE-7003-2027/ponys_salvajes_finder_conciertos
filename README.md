@@ -1,6 +1,6 @@
 <div align="center">
 
-![Ponys Salvajes Banner](img/banner.png)
+![Ponys Salvajes Banner](img/imgBanner.png)
 
 # 🐴 Ponys Salvajes — Finder de Conciertos 🎸
 
