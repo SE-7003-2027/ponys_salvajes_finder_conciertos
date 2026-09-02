@@ -38,7 +38,8 @@ Equipo **Ponys Salvajes** — Ingeniería en Software
 
 ## Features
 
-Estado del sprint actual — se va marcando conforme se completan.
+Estado del sprint actual 
+*se va marcando conforme se completan*
 
 - [ ] Búsqueda de conciertos por artista, ciudad o fecha
 - [ ] Perfil de usuario
