@@ -21,7 +21,7 @@ a conciertos y eventos musicales.
 
 Equipo **Ponys Salvajes** — Ingeniería en Software
 
-- García Villa Nelson Osmar
+- García Villa Nelson Osmar | #322190357
 - [Nombre Apellido]
 - [Nombre Apellido]
 - [Nombre Apellido]
