@@ -68,7 +68,7 @@ Aún no definido en equipo — se actualiza en cuanto se decida.
 <summary><b>Requisitos previos</b></summary>
 <br>
 
-- *(agregar lenguaje/runtime, versión, gestor de dependencias, Docker, etc.)*
+- *(agregaremos lenguaje, versión, gestor de dependencias, smdb, etc.)*
 - Git
 
 </details>
