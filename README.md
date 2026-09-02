@@ -32,7 +32,7 @@ Equipo **Ponys Salvajes** — Ingeniería en Software
 - Corona Domínguez Jesús Alexis | 317094992
 - Monroy Flores Alexa Sofia | 118007508
 - Gómez Aguilar Jesús | 322125502
-- [Nombre Apellido]
+- Hernández Vázquez Carlos Arturo | 320325775
 
 <br>
 
