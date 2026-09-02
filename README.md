@@ -17,14 +17,10 @@
 
 <br>
 
-## Qué es esto
+## ¿Qué es esto?
 
-**Finder de Conciertos** es una app para buscar, descubrir y dar seguimiento
+-- **Finder de Conciertos** es una app para buscar, descubrir y dar seguimiento
 a conciertos y eventos musicales.
-
-> Heads up: el proyecto acaba de arrancar. Este README se va actualizando
-> en cada sprint para reflejar el estado real del trabajo — si algo aquí ya
-> no aplica, probablemente sea porque avanzamos.
 
 <br>
 
@@ -32,7 +28,7 @@ a conciertos y eventos musicales.
 
 Equipo **Ponys Salvajes** — Ingeniería en Software
 
-- García Villa Nelson Osmar
+- García Villa Nelson Osmar | 322190357
 - [Nombre Apellido]
 - [Nombre Apellido]
 - [Nombre Apellido]
@@ -46,7 +42,7 @@ Estado del sprint actual — se va marcando conforme se completan.
 
 - [ ] Búsqueda de conciertos por artista, ciudad o fecha
 - [ ] Perfil de usuario
-- [ ] *(agregar aquí más features conforme se definan)*
+- [ ] *(agregaremos aquí más features conforme se definan)*
 
 <br>
 
