@@ -31,7 +31,7 @@ Equipo **Ponys Salvajes** — Ingeniería en Software
 - García Villa Nelson Osmar | 322190357
 - Corona Domínguez Jesús Alexis | 317094992
 - Monroy Flores Alexa Sofia | 118007508
-- [Nombre Apellido]
+- Gómez Aguilar Jesús | 322125502
 - [Nombre Apellido]
 
 <br>
