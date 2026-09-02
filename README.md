@@ -29,7 +29,7 @@ a conciertos y eventos musicales.
 Equipo **Ponys Salvajes** — Ingeniería en Software
 
 - García Villa Nelson Osmar | 322190357
-- [Nombre Apellido]
+- Corona Domínguez Jesús Alexis | 317094992
 - [Nombre Apellido]
 - [Nombre Apellido]
 - [Nombre Apellido]
