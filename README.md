@@ -6,47 +6,78 @@
 
 **Galopa hacia la música: La plataforma que conecta tus gustos con el escenario**
 
-Qué es esto
-
-Finder de Conciertos es una app para buscar, descubrir y dar seguimiento a conciertos y eventos musicales.
-
-Heads up: el proyecto acaba de arrancar. Este README se va actualizando en cada sprint para reflejar el estado real del trabajo — si algo aquí ya no aplica, probablemente sea porque avanzamos.
+<p>
+  <a href="#qué-es-esto">Qué es esto</a> ·
+  <a href="#equipo">Equipo</a> ·
+  <a href="#features">Features</a> ·
+  <a href="#stack">Stack</a> ·
+  <a href="#cómo-correrlo">Cómo correrlo</a> ·
+  <a href="#docs">Docs</a>
+</p>
 
 <br>
-Equipo 🐴
 
-Equipo Ponys Salvajes — Ingeniería en Software
+## Qué es esto
 
-García Villa Nelson Osmar
-[Nombre Apellido]
-[Nombre Apellido]
-[Nombre Apellido]
-[Nombre Apellido]
+**Finder de Conciertos** es una app para buscar, descubrir y dar seguimiento
+a conciertos y eventos musicales.
+
+> Heads up: el proyecto acaba de arrancar. Este README se va actualizando
+> en cada sprint para reflejar el estado real del trabajo — si algo aquí ya
+> no aplica, probablemente sea porque avanzamos.
+
 <br>
-Features
+
+## Equipo 🐴
+
+Equipo **Ponys Salvajes** — Ingeniería en Software
+
+- García Villa Nelson Osmar
+- [Nombre Apellido]
+- [Nombre Apellido]
+- [Nombre Apellido]
+- [Nombre Apellido]
+
+<br>
+
+## Features
 
 Estado del sprint actual — se va marcando conforme se completan.
 
- Búsqueda de conciertos por artista, ciudad o fecha
- Perfil de usuario
- (agregar aquí más features conforme se definan)
+- [ ] Búsqueda de conciertos por artista, ciudad o fecha
+- [ ] Perfil de usuario
+- [ ] *(agregar aquí más features conforme se definan)*
+
 <br>
-Stack
+
+## Stack
 
 Aún no definido en equipo — se actualiza en cuanto se decida.
 
 <div align="center">
-	
-Frontend	por definir
-Backend	por definir
-Base de datos	por definir
-</div> <br>
-Cómo correrlo
-<details open> <summary><b>Requisitos previos</b></summary> <br>
-(agregar lenguaje/runtime, versión, gestor de dependencias, Docker, etc.)
-Git
+
+| | |
+|---|---|
+| **Frontend** | `por definir` |
+| **Backend** | `por definir` |
+| **Base de datos** | `por definir` |
+
+</div>
+
+<br>
+
+## Cómo correrlo
+
+<details open>
+<summary><b>Requisitos previos</b></summary>
+<br>
+
+- *(agregar lenguaje/runtime, versión, gestor de dependencias, Docker, etc.)*
+- Git
+
 </details>
-bash
+
+```bash
 # clonar 🐴
 git clone https://github.com/SE-7003-2027/ponys_salvajes_finder_conciertos.git
 cd ponys_salvajes_finder_conciertos
@@ -54,17 +85,18 @@ cd ponys_salvajes_finder_conciertos
 # instalar dependencias (por definir)
 
 # levantar el proyecto (por definir)
+```
+
 <br>
-Docs 🐴
-	
-Guía de estilo	docs/guia-de-estilo.md
-Decisiones de arquitectura (ADRs)	docs/adr/
-Guía de contribución	CONTRIBUTING.md
+
+## Docs 🐴
+
+| | |
+|---|---|
+| Guía de estilo | [`docs/guia-de-estilo.md`](docs/guia-de-estilo.md) |
+| Decisiones de arquitectura (ADRs) | [`docs/adr/`](docs/adr/) |
+| Guía de contribución | [`CONTRIBUTING.md`](CONTRIBUTING.md) |
+
+<br>
 
 <p align="center"><sub>Hecho con 🐴 por el equipo Ponys Salvajes</sub></p>
-
-<div align="center">
-
-*Hecho con 🐴 por el equipo Ponys Salvajes*
-
-</div>
