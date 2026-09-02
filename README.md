@@ -2,7 +2,7 @@
 
 ![Ponys Salvajes Banner](img/imgBanner.png)
 
-# 🐴 Ponys Salvajes — Finder de Conciertos 🎸
+# 🐴 Ponys Salvajes | Finder de Conciertos 🎸
 
 **Encuentra, descubre y no te pierdas ni un solo concierto.**
 
