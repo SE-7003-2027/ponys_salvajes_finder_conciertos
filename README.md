@@ -30,7 +30,7 @@ Equipo **Ponys Salvajes** — Ingeniería en Software
 
 - García Villa Nelson Osmar | 322190357
 - Corona Domínguez Jesús Alexis | 317094992
-- [Nombre Apellido]
+- Monroy Flores Alexa Sofia | 118007508
 - [Nombre Apellido]
 - [Nombre Apellido]
 
@@ -43,6 +43,7 @@ Estado del sprint actual
 
 - [ ] Búsqueda de conciertos por artista, ciudad o fecha
 - [ ] Perfil de usuario
+- [ ] Sugerencias de conciertos basadas en intereses del usuario obtenidos de la información de la aplicación *(por definir)*
 - [ ] *(agregaremos aquí más features conforme se definan)*
 
 <br>
