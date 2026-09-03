@@ -28,11 +28,11 @@ a conciertos y eventos musicales.
 
 Equipo **Ponys Salvajes** — Ingeniería en Software
 
-- García Villa Nelson Osmar | 322190357
-- Corona Domínguez Jesús Alexis | 317094992
-- Monroy Flores Alexa Sofia | 118007508
-- Gómez Aguilar Jesús | 322125502
-- Hernández Vázquez Carlos Arturo | 320325775
+- García Villa Nelson Osmar
+- Corona Domínguez Jesús Alexis
+- Monroy Flores Alexa Sofia
+- Gómez Aguilar Jesús
+- Hernández Vázquez Carlos Arturo
 
 <br>
 
