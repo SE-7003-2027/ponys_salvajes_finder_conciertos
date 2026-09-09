@@ -28,17 +28,17 @@ a conciertos y eventos musicales.
 
 Equipo **Ponys Salvajes** — Ingeniería en Software
 
-- García Villa Nelson Osmar | 322190357
-- Corona Domínguez Jesús Alexis | 317094992
-- Monroy Flores Alexa Sofia | 118007508
-- Gómez Aguilar Jesús | 322125502
-- [Nombre Apellido]
+- García Osmar
+- Corona Alexis
+- Monroy Sofia
+- Gómez Jesús
+- Hernandez Carlos
 
 <br>
 
 ## Features
 
-Estado del sprint actual 
+Estado del sprint actual
 *se va marcando conforme se completan*
 
 - [ ] Búsqueda de conciertos por artista, ciudad o fecha
@@ -55,7 +55,7 @@ Aún no definido en equipo — se actualiza en cuanto se decida.
 <div align="center">
 
 | | |
-|---|---|
+| --- | --- |
 | **Frontend** | `por definir` |
 | **Backend** | `por definir` |
 | **Base de datos** | `por definir` |
@@ -90,7 +90,7 @@ cd ponys_salvajes_finder_conciertos
 ## Docs 🐴
 
 | | |
-|---|---|
+| --- | --- |
 | Guía de estilo | [`docs/guia-de-estilo.md`](docs/guia-de-estilo.md) |
 | Decisiones de arquitectura (ADRs) | [`docs/adr/`](docs/adr/) |
 | Guía de contribución | [`CONTRIBUTING.md`](CONTRIBUTING.md) |
