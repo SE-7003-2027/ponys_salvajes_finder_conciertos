@@ -28,7 +28,7 @@ a conciertos y eventos musicales.
 
 Equipo **Ponys Salvajes** — Ingeniería en Software
 
-- García Osmar
+- García Nelson
 - Corona Alexis
 - Monroy Sofia
 - Gómez Jesús
@@ -38,30 +38,31 @@ Equipo **Ponys Salvajes** — Ingeniería en Software
 
 ## Features
 
-Estado del sprint actual
-*se va marcando conforme se completan*
+Trabajamos bajo la estrategia de _User Story Mapping_. Procuramos agregar nuevas
+características en cada sprint para que la experiencia sea cada vez más disfrutable.
 
-- [ ] Búsqueda de conciertos por artista, ciudad o fecha
-- [ ] Perfil de usuario
-- [ ] Sugerencias de conciertos basadas en intereses del usuario obtenidos de la información de la aplicación *(por definir)*
-- [ ] *(agregaremos aquí más features conforme se definan)*
+Algunas de las características más relevantes serán:
 
+- Recomendaciones personalizadas con base en gustos personales.
+- Filtrar solo los resultados interesantes para el usuario.
+- Sistema de reseñas para calificar conciertos pasados.
+- Página de artistas para conocer eventos próximos.
+
+Los detalles completos, organizados por sprints, se encuentran en [`USM.md`](/USM.md)
 <br>
 
 ## Stack
 
-Aún no definido en equipo — se actualiza en cuanto se decida.
-
 <div align="center">
 
-| | |
-| --- | --- |
-| **Frontend** | `por definir` |
-| **Backend** | `por definir` |
-| **Base de datos** | `por definir` |
+  | | |
+  | --- | --- |
+  | **Frontend** | [React](https://react.dev/) |
+  | **Backend** | [Express](https://expressjs.com/) |
+  | **Base de datos** | [PostgreSQL](https://www.postgresql.org/) |
+  | **Music API** | [Spotify Web API](https://developer.spotify.com/documentation/web-api) |
 
 </div>
-
 <br>
 
 ## Cómo correrlo
@@ -70,7 +71,7 @@ Aún no definido en equipo — se actualiza en cuanto se decida.
 <summary><b>Requisitos previos</b></summary>
 <br>
 
-- *(agregaremos lenguaje, versión, gestor de dependencias, smdb, etc.)*
+- _(agregaremos lenguaje, versión, gestor de dependencias, smdb, etc.)_
 - Git
 
 </details>
@@ -91,9 +92,9 @@ cd ponys_salvajes_finder_conciertos
 
 | | |
 | --- | --- |
-| Guía de estilo | [`docs/guia-de-estilo.md`](docs/guia-de-estilo.md) |
-| Decisiones de arquitectura (ADRs) | [`docs/adr/`](docs/adr/) |
-| Guía de contribución | [`CONTRIBUTING.md`](CONTRIBUTING.md) |
+| Guía de estilo | `por definir` |
+| Decisiones de arquitectura (ADRs) | `por definir` |
+| Guía de contribución | `por definir` |
 
 <br>
 
