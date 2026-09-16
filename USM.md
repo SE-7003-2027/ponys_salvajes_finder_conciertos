@@ -1,21 +1,20 @@
-# User Story Map - Finder de Conciertos
+# User Story Map - Concert Finder
 
 ## User Journey
 
 ```
-[ Iniciar sesión / Registro ] ➔ [ Recomendaciones (Home) ] ➔ [ Buscador / Filtros ] ➔ [ Perfil de Artista ] ➔ [ Concierto / Boletera / Reseñas ]
+[ Log In / Sign Up ] ➔ [ Recommendations (Home) ] ➔ [ Search / Filters ] ➔ [ Artist Profile ] ➔ [ Concert / Ticketing / Reviews ]
 ```
 
 ---
 
-## User Story Mapping por Sprints
+## User Story Mapping by Sprints
 
-| Actividad | Registro / Cuenta | Recomendaciones (Home) | Buscador / Filtros | Perfil del Artista | Conciertos / Boletera / Reseñas |
+| Activity | Registration / Account | Recommendations (Home) | Search / Filters | Artist Profile | Concerts / Ticketing / Reviews |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Sprint 1: Esqueleto Funcional** | Registro básico con email y password | Feed estático con eventos generales (mocks). | Búsqueda simple por texto exacto de artista. | Vista básica del artista: nombre, biografía y fechas (mock). | Información básica: recinto, fecha y enlace externo (mock). |
-| **Sprint 2: Eventos Reales** | Persistencia de sesión de usuario y tokens de autenticación. | Feed de eventos reales consumidos de API externa. | Búsqueda por artista o evento conectada a API de eventos. | Renderizado de datos reales del artista y eventos actuales. | Vista detallada de concierto: recinto, mapa/dirección, precios y link a boletera. |
-| **Sprint 3: Integración de Servicio Musical** | Integración de Spotify OAuth ("Conectar cuenta de Spotify"). | Recomendación v1: Conciertos basados en los Top Artists del usuario. | Búsqueda con autocompletado básico y coincidencia parcial. | Enlace a perfil de Spotify del artista e integración de preview de discografía. | Botón para guardar concierto en lista de deseos. |
-| **Sprint 4: Filtros y "Similares"** | Gestión de preferencias musicales manuales . | Recomendación v2: Conciertos de artistas similares (género similar / related artists). | Filtros avanzados: por ciudad/ubicación, rango de fechas y géneros musicales. | Pestaña de artistas relacionados con conciertos próximos. | (Historial) Creación de listas de eventos guardados (próximos, pasados). |
-| **Sprint 5: Reseñas** | Perfil de usuario editable (avatar, biografía, ciudad, ...). | Sección personalizada: "Conciertos guardados". | Sugerencias de búsqueda basadas en gustos ("Te podría gustar). | Calificación promedio de conciertos pasados del artista otorgada por usuarios. | Sección de reseñas: texto y calificación por estrellas (1 a 5) en conciertos pasados. |
-| **Sprint 6: Seguridad, Features no Esenciales** | Seguridad para iniciar sesión, "olvidí mi contraseña", ... | Manejo de errores externos: si fallan APIs externas, no hay conciertos disponibles, cancelaciones. | Optimización: paginación / scroll infinito en resultados. | Mejora visual, responsive design. | Mostrar reseñas priorizando "Fue útil" dada por los usuarios (reseñas "importantes" primero). |
-
+| **Sprint 1: Functional Skeleton** | Basic sign-up with email and password. | Static feed with general events (mocks). | Simple search by exact artist name. | Basic artist view: name, biography, and dates (mock). | Basic information: venue, date, and external link (mock). |
+| **Sprint 2: Real Events** | User session persistence and authentication tokens. | Feed of real events fetched from an external API. | Search by artist or event connected to events API. | Rendering real artist data and current events. | Detailed concert view: venue, map/address, prices, and ticketing link. |
+| **Sprint 3: Music Service Integration** | Spotify OAuth integration ("Connect Spotify account"). | Recommendation v1: Concerts based on user's Top Artists. | Search with basic autocomplete and partial matching. | Link to artist's Spotify profile and discography preview integration. | Button to save concert to wishlist. |
+| **Sprint 4: Filters and "Similar Artists"** | Manual music preference management. | Recommendation v2: Concerts by similar artists (similar genre / related artists). | Advanced filters: by city/location, date range, and music genres. | Related artists tab with upcoming concerts. | (History) Creation of saved event lists (upcoming, past). |
+| **Sprint 5: Reviews** | Editable user profile (avatar, biography, city, ...). | Personalized section: "Saved concerts". | Search suggestions based on tastes ("You might like"). | Average user rating for the artist's past concerts. | Reviews section: text and star rating (1 to 5) for past concerts. |
+| **Sprint 6: Security, Non-Essential Features** | Login security, "forgot my password", ... | External error handling: third-party API failures, no available concerts, cancellations. | Optimization: pagination / infinite scroll in results. | Visual polish, responsive design. | Display reviews prioritizing user "Helpful" votes ("top" reviews first). |
