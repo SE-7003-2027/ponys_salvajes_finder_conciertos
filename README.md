@@ -1,32 +1,36 @@
-<div align="center">
-
 ![Ponys Salvajes Banner](img/imgBanner.png)
 
-# 🐴 Ponys Salvajes | Finder de Conciertos 🎸
+# 🐴 Ponys Salvajes | Concert Finder 🎸
 
-**Galopa hacia la música: La plataforma que conecta tus gustos con el escenario**
+<div align="center">
 
-<p>
-  <a href="#qué-es-esto">Qué es esto</a> ·
-  <a href="#equipo">Equipo</a> ·
-  <a href="#features">Features</a> ·
-  <a href="#stack">Stack</a> ·
-  <a href="#cómo-correrlo">Cómo correrlo</a> ·
-  <a href="#docs">Docs</a>
-</p>
+  **Gallop towards music: The app that connects your musical tastes with the stage.**
 
-<br>
+  <p>
+    <a href="#what-this-is">What this is</a> ·
+    <a href="#team-members">Team members</a> ·
+    <a href="#features">Features</a> ·
+    <a href="#stack">Stack</a> ·
+    <a href="#how-to-run-it">How to run it</a> ·
+    <a href="#documentation">Documentation</a>
+  </p>
 
-## ¿Qué es esto?
+</div>
 
--- **Finder de Conciertos** es una app para buscar, descubrir y dar seguimiento
-a conciertos y eventos musicales.
+## What this is
 
-<br>
+**Concert Finder** is a web application to search, discover, and track concerts
+and musical events.
 
-## Equipo 🐴
+Find details about your favorite artists and bands, and discover which events
+suit you best based on your location, preferred dates, price range, and more.
 
-Equipo **Ponys Salvajes** — Ingeniería en Software
+If you are unsure where to start, the app recommends events tailored to your
+music taste.
+
+## Team members
+
+Our team is **Ponys Salvajes**, composed of:
 
 - García Nelson
 - Corona Alexis
@@ -34,69 +38,49 @@ Equipo **Ponys Salvajes** — Ingeniería en Software
 - Gómez Jesús
 - Hernandez Carlos
 
-<br>
-
 ## Features
 
-Trabajamos bajo la estrategia de _User Story Mapping_. Procuramos agregar nuevas
-características en cada sprint para que la experiencia sea cada vez más disfrutable.
+We work following the _User Story Mapping_ framework, delivering incremental
+value every two-week sprint to continuously improve the user experience.
 
-Algunas de las características más relevantes serán:
+**Key features** include:
 
-- Recomendaciones personalizadas con base en gustos personales.
-- Filtrar solo los resultados interesantes para el usuario.
-- Sistema de reseñas para calificar conciertos pasados.
-- Página de artistas para conocer eventos próximos.
+- **Personalized recommendations** based on your listening history.
+- **Search filters** to quickly find events by city, date, or venue.
+- **A review system** to rate and share feedback on past events.
+- **Artist profiles** with confirmed tour dates and direct ticket links.
 
-Los detalles completos, organizados por sprints, se encuentran en [`USM.md`](/USM.md)
-<br>
+Detailed planning is documented in [`USM.md`](/USM.md).
 
 ## Stack
 
-<div align="center">
+| Component / Layer | Technology |
+| --- | --- |
+| **Frontend** | [React](https://react.dev/) |
+| **Backend** | [Express](https://expressjs.com/) |
+| **Database** | [PostgreSQL](https://www.postgresql.org/) |
+| **Music API** | [Spotify Web API](https://developer.spotify.com/documentation/web-api) |
+| **Ticketing API** | [Ticketmaster API](https://developer.ticketmaster.com/products-and-docs/apis/discovery-api/v2/) |
 
-  | | |
-  | --- | --- |
-  | **Frontend** | [React](https://react.dev/) |
-  | **Backend** | [Express](https://expressjs.com/) |
-  | **Base de datos** | [PostgreSQL](https://www.postgresql.org/) |
-  | **Music API** | [Spotify Web API](https://developer.spotify.com/documentation/web-api) |
-  | **Boletera API** | [Spotify Web API](https://developer.ticketmaster.com/products-and-docs/apis/discovery-api/v2/) |
+## How to run it
 
-</div>
-<br>
-
-## Cómo correrlo
+> [!NOTE]
+> This section is under development. Setup and run instructions will be added soon.
 
 <details open>
-<summary><b>Requisitos previos</b></summary>
-<br>
+<summary><b>Requirements</b></summary>
 
-- _(agregaremos lenguaje, versión, gestor de dependencias, smdb, etc.)_
+- [Node.js](https://nodejs.org/) and a package manager: `npm` or `pnpm`.
 - Git
+- [Vite](https://vite.dev/)
 
 </details>
 
-```bash
-# clonar 🐴
-git clone https://github.com/SE-7003-2027/ponys_salvajes_finder_conciertos.git
-cd ponys_salvajes_finder_conciertos
+## Documentation
 
-# instalar dependencias (por definir)
+> [!NOTE]
+> This section is under development. Detailed specifications will be added soon.
 
-# levantar el proyecto (por definir)
-```
+Further documentation is available in the project's GitHub Wiki.
 
-<br>
-
-## Docs 🐴
-
-| | |
-| --- | --- |
-| Guía de estilo | `por definir` |
-| Decisiones de arquitectura (ADRs) | `por definir` |
-| Guía de contribución | `por definir` |
-
-<br>
-
-<p align="center"><sub>Hecho con 🐴 por el equipo Ponys Salvajes</sub></p>
+<p align="center"><sub>Built with 🐴 by Ponys Salvajes</sub></p>
