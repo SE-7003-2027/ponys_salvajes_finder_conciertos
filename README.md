@@ -61,6 +61,7 @@ Los detalles completos, organizados por sprints, se encuentran en [`USM.md`](/US
   | **Backend** | [Express](https://expressjs.com/) |
   | **Base de datos** | [PostgreSQL](https://www.postgresql.org/) |
   | **Music API** | [Spotify Web API](https://developer.spotify.com/documentation/web-api) |
+  | **Boletera API** | [Spotify Web API](https://developer.ticketmaster.com/products-and-docs/apis/discovery-api/v2/) |
 
 </div>
 <br>
