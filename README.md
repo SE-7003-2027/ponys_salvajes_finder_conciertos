@@ -1,100 +1,86 @@
-<div align="center">
-
 ![Ponys Salvajes Banner](img/imgBanner.png)
 
-# 🐴 Ponys Salvajes | Finder de Conciertos 🎸
-
-**Galopa hacia la música: La plataforma que conecta tus gustos con el escenario**
-
-<p>
-  <a href="#qué-es-esto">Qué es esto</a> ·
-  <a href="#equipo">Equipo</a> ·
-  <a href="#features">Features</a> ·
-  <a href="#stack">Stack</a> ·
-  <a href="#cómo-correrlo">Cómo correrlo</a> ·
-  <a href="#docs">Docs</a>
-</p>
-
-<br>
-
-## ¿Qué es esto?
-
--- **Finder de Conciertos** es una app para buscar, descubrir y dar seguimiento
-a conciertos y eventos musicales.
-
-<br>
-
-## Equipo 🐴
-
-Equipo **Ponys Salvajes** — Ingeniería en Software
-
-- García Villa Nelson Osmar
-- Corona Domínguez Jesús Alexis
-- Monroy Flores Alexa Sofia
-- Gómez Aguilar Jesús
-- Hernández Vázquez Carlos Arturo
-
-<br>
-
-## Features
-
-Estado del sprint actual 
-*se va marcando conforme se completan*
-
-- [ ] Búsqueda de conciertos por artista, ciudad o fecha
-- [ ] Perfil de usuario
-- [ ] Sugerencias de conciertos basadas en intereses del usuario obtenidos de la información de la aplicación *(por definir)*
-- [ ] *(agregaremos aquí más features conforme se definan)*
-
-<br>
-
-## Stack
-
-Aún no definido en equipo — se actualiza en cuanto se decida.
+# 🐴 Ponys Salvajes | Concert Finder 🎸
 
 <div align="center">
 
-| | |
-|---|---|
-| **Frontend** | `por definir` |
-| **Backend** | `por definir` |
-| **Base de datos** | `por definir` |
+  **Gallop towards music: The app that connects your musical tastes with the stage.**
+
+  <p>
+    <a href="#what-this-is">What this is</a> ·
+    <a href="#team-members">Team members</a> ·
+    <a href="#features">Features</a> ·
+    <a href="#stack">Stack</a> ·
+    <a href="#how-to-run-it">How to run it</a> ·
+    <a href="#documentation">Documentation</a>
+  </p>
 
 </div>
 
-<br>
+## What this is
 
-## Cómo correrlo
+**Concert Finder** is a web application to search, discover, and track concerts
+and musical events.
+
+Find details about your favorite artists and bands, and discover which events
+suit you best based on your location, preferred dates, price range, and more.
+
+If you are unsure where to start, the app recommends events tailored to your
+music taste.
+
+## Team members
+
+Our team is **Ponys Salvajes**, composed of:
+
+- García Nelson
+- Corona Alexis
+- Monroy Sofia
+- Gómez Jesús
+- Hernandez Carlos
+
+## Features
+
+We work following the _User Story Mapping_ framework, delivering incremental
+value every two-week sprint to continuously improve the user experience.
+
+**Key features** include:
+
+- **Personalized recommendations** based on your listening history.
+- **Search filters** to quickly find events by city, date, or venue.
+- **A review system** to rate and share feedback on past events.
+- **Artist profiles** with confirmed tour dates and direct ticket links.
+
+Detailed planning is documented in [`USM.md`](/USM.md).
+
+## Stack
+
+| Component / Layer | Technology |
+| --- | --- |
+| **Frontend** | [React](https://react.dev/) |
+| **Backend** | [Express](https://expressjs.com/) |
+| **Database** | [PostgreSQL](https://www.postgresql.org/) |
+| **Music API** | [Spotify Web API](https://developer.spotify.com/documentation/web-api) |
+| **Ticketing API** | [Ticketmaster API](https://developer.ticketmaster.com/products-and-docs/apis/discovery-api/v2/) |
+
+## How to run it
+
+> [!NOTE]
+> This section is under development. Setup and run instructions will be added soon.
 
 <details open>
-<summary><b>Requisitos previos</b></summary>
-<br>
+<summary><b>Requirements</b></summary>
 
-- *(agregaremos lenguaje, versión, gestor de dependencias, smdb, etc.)*
+- [Node.js](https://nodejs.org/) and a package manager: `npm` or `pnpm`.
 - Git
+- [Vite](https://vite.dev/)
 
 </details>
 
-```bash
-# clonar 🐴
-git clone https://github.com/SE-7003-2027/ponys_salvajes_finder_conciertos.git
-cd ponys_salvajes_finder_conciertos
+## Documentation
 
-# instalar dependencias (por definir)
+> [!NOTE]
+> This section is under development. Detailed specifications will be added soon.
 
-# levantar el proyecto (por definir)
-```
+Further documentation is available in the project's GitHub Wiki.
 
-<br>
-
-## Docs 🐴
-
-| | |
-|---|---|
-| Guía de estilo | [`docs/guia-de-estilo.md`](docs/guia-de-estilo.md) |
-| Decisiones de arquitectura (ADRs) | [`docs/adr/`](docs/adr/) |
-| Guía de contribución | [`CONTRIBUTING.md`](CONTRIBUTING.md) |
-
-<br>
-
-<p align="center"><sub>Hecho con 🐴 por el equipo Ponys Salvajes</sub></p>
+<p align="center"><sub>Built with 🐴 by Ponys Salvajes</sub></p>
