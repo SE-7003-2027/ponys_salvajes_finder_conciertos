@@ -1,28 +1,17 @@
-import { useState } from 'react';
-import { getRecommendedEvents } from './services/event-service';
-import type { Concert } from './types/concert';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Home } from './pages/Home';
+import { Artist } from './pages/Artist';
+import { Login } from './pages/Login';
 
 export function App() {
-  const [concerts] = useState<Concert[]>(getRecommendedEvents);
-
   return (
-    <main>
-      <header>
-        <h1>Concert Finder 🐴</h1>
-        <p>Upcoming recommended events (Sprint 1 - Mock)</p>
-      </header>
-
-      <section style={{ marginTop: '2rem' }}>
-        <ul>
-          {concerts.map((concert) => (
-            <li key={concert.id} style={{ marginBottom: '1rem' }}>
-              <strong>{concert.artist}</strong> --{concert.venue} ({concert.city})
-              <div>Date: {concert.date}</div>
-            </li>
-          ))}
-        </ul>
-      </section>
-    </main>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/artist/:id" element={<Artist />} />
+        <Route path="/login" element={<Login />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
