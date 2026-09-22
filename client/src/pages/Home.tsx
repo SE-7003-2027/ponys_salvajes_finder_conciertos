@@ -13,12 +13,14 @@ export function Home() {
   );
 
   return (
-    <main>
-      <header>
-        <h1>Concert Finder 🐴</h1>
-        <Navbar query={query} onSearch={setQuery} />
-      </header>
-      <ConcertGrid concerts={filteredConcerts} />
+    <main className="min-h-screen bg-black text-white font-sans p-6">
+      <div className="max-w-6xl mx-auto w-full" >
+        <header className="border-b border-[#262626] pb-6 mb-8" >
+          <h1>Concert Finder 🐴</h1>
+          <Navbar query={query} onSearch={setQuery} />
+        </header>
+        <ConcertGrid concerts={filteredConcerts} />
+      </div>
     </main>
   );
 }
