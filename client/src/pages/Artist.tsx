@@ -11,8 +11,8 @@ export function Artist() {
   if (artistConcerts.length === 0) {
     return (
       <main className="p-6">
-        <h1 className="text-2xl font-bold">Artista no encontrado</h1>
-        <p className="text-gray-600">No hay conciertos para este artista.</p>
+        <h1 className="text-2xl font-bold">Artist not found</h1>
+        <p className="text-gray-600">No concerts found for this artist.</p>
       </main>
     );
   }
@@ -27,20 +27,20 @@ export function Artist() {
         </div>
         <h1 className="text-4xl font-bold">{artistName}</h1>
         <p className="text-gray-600 mt-2">
-          Biografía del artista y detalles sobre su carrera musical.
+          Artist biography (placeholder). Real information will be added in the future.
         </p>
       </header>
 
       <section>
-        <h2 className="text-2xl font-semibold mb-4">Próximos conciertos</h2>
+        <h2 className="text-2xl font-semibold mb-4">Upcoming concerts</h2>
         <ul className="space-y-4">
           {artistConcerts.map((concert) => (
             <li key={concert.id} className="border p-4 rounded-lg shadow-sm">
-              <p><strong>Lugar:</strong> {concert.venue}</p>
-              <p><strong>Ciudad:</strong> {concert.city}</p>
-              <p><strong>Fecha:</strong> {concert.date}</p>
+              <p><strong>Venue:</strong> {concert.venue}</p>
+              <p><strong>City:</strong> {concert.city}</p>
+              <p><strong>Date:</strong> {concert.date}</p>
               <button className="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-                Comprar boletos
+                Buy tickets
               </button>
             </li>
           ))}
@@ -49,4 +49,3 @@ export function Artist() {
     </main>
   );
 }
-
