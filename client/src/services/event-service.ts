@@ -21,15 +21,17 @@ export async function searchEvents(query: string): Promise<Concert[]> {
 
     const data = await response.json()
     const rawEvents = data._embedded?.events || []
-
+    console.log("Raw event from Ticketmaster:", rawEvents[0]);
     return rawEvents.map((event: any): Concert => {
       return {
         id: event.id,
         title: event.name,
+        artistId: event._embedded?.attractions?.[0]?.id || '',
         artist: event._embedded?.attractions?.[0]?.name || event.name,
-        date: event.dates?.start?.localDate || 'Por confirmar',
-        venue: event._embedded?.venues?.[0]?.name || 'Ubicación no especificada',
-        city: event._embedded?.venues?.[0]?.city?.name || event.place?.city?.name || 'Ciudad no especificada',
+        venue: event._embedded?.venues?.[0]?.name || 'Venue not specified',
+        city: event._embedded?.venues?.[0]?.city?.name || event.place?.city?.name || 'City not specified',
+        date: event.dates?.start?.localDate || 'To be announced',
+        ticketUrl: event.url || 'https://www.ticketmaster.com/',
       }
     })
   } catch (error) {

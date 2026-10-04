@@ -34,11 +34,11 @@ export function Home() {
 
         {loading ? (
           <div className="text-center py-10 font-mono text-gray-400">
-            Buscando conciertos reales en Ticketmaster...
+            Looking for real concerts on Ticketmaster...
           </div>
         ) : concerts.length === 0 ? (
           <div className="text-center py-10 font-mono text-gray-500">
-            No se encontraron conciertos para "{query}".
+            No concerts were found for "{query}".
           </div>
         ) : (
           <ConcertGrid concerts={concerts} />
