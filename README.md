@@ -63,18 +63,29 @@ Detailed planning is documented in [`USM.md`](/USM.md).
 | **Ticketing API** | [Ticketmaster API](https://developer.ticketmaster.com/products-and-docs/apis/discovery-api/v2/) |
 
 ## How to run it
+**Requirements**
+* Node.js and a package manager: npm or pnpm.
+* Git
+* Vite
 
-> [!NOTE]
-> This section is under development. Setup and run instructions will be added soon.
+**Setup Instructions** 
+1. **Clone the repository:**
+Open your terminal and run:
+git clone [https://github.com/SE-7003-2027/ponys_salvajes_finder_conciertos.git](https://github.com/SE-7003-2027/ponys_salvajes_finder_conciertos.git)
+   cd ponys_salvajes_finder_conciertos
 
-<details open>
-<summary><b>Requirements</b></summary>
+2. **Install dependencies:**
+Install the required packages by running:
+npm install or pnpm install if you are using pnpm
 
-- [Node.js](https://nodejs.org/) and a package manager: `npm` or `pnpm`.
-- Git
-- [Vite](https://vite.dev/)
+3. **Environment Variables:** 
+Create a .env file in the root directory to store your local credentials (Such as Spotify API, Ticketmaster API, and PostgreSQL connections URIs)
+Note: Never commit this file,Make sure .env is listed in your .gitignore
 
-</details>
+4. **Run the development server:**
+Start the local environment by running: 
+npm run dev  
+This application will be available in your browser
 
 ## Documentation
 
