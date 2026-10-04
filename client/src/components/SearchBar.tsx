@@ -5,12 +5,12 @@ interface SearchBarProps {
   onSearch: (value: string) => void;
 }
 
-export function SearchBar({ query, onSearch }: SearchBarProps) {
+export function SearchBar({ query, onSearch}: SearchBarProps) {
   return (
-    <div className="relative">
+    <div className="relative w-full">
       <input
         type="text"
-        placeholder="Search artist..."
+        placeholder="Search by artist or show..."
         value={query}
         onChange={(e) => onSearch(e.target.value)}
         className={`
@@ -21,6 +21,7 @@ export function SearchBar({ query, onSearch }: SearchBarProps) {
           caret-[#0457cb] cursor-text
         `}
       />
+
       {query && (
         <button
           type="button"

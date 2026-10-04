@@ -21,7 +21,7 @@ export function ConcertCard({ concert }: ConcertCardProps) {
       <p className="text-xs text-gray-400 font-medium">{concert.venue} ({concert.city})</p>
       <p className="w-fit px-2.5 py-1 rounded-md text-xs font-medium bg-[#1a1a1a] text-gray-300 border border-[#262626]">Date: {concert.date}</p>
       <a
-        href="https://www.ticketmaster.com/"
+        href={concert.ticketUrl}
         rel="noreferrer"
         target="_blank"
         className="block w-full py-2.5 rounded-lg bg-[#0457CB] hover:bg-emerald-600 text-white font-semibold text-xs text-center cursor-pointer transition-colors shadow-md"
