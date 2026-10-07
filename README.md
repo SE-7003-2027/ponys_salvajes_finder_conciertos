@@ -67,6 +67,7 @@ Detailed planning is documented in [`USM.md`](/USM.md).
 * Node.js and a package manager: npm or pnpm.
 * Git
 * Vite
+* PostgreSQL
 
 **Setup Instructions** 
 1. **Clone the repository:**
@@ -86,6 +87,23 @@ Note: Never commit this file,Make sure .env is listed in your .gitignore
 Start the local environment by running: 
 npm run dev  
 This application will be available in your browser
+
+5. **Backend Setup (Server):**
+Open a new terminal and navigate to the server folder:
+    cd server
+
+6. **Install dependencies:**
+Install the required packages by running:
+npm install or pnpm install if you are using pnpm
+
+7. **Database & Environment:**
+Create a `.env` file inside the `server` directory using `.env.example` as a template, filling in your PostgreSQL credentials and a `JWT_SECRET`.
+Then, create a local database in pgAdmin and run the `server/schema.sql` script to generate the required tables.
+
+8. **Run the server:**
+Start the server by running: 
+node server.js
+
 
 ## Documentation
 
