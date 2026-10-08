@@ -5,23 +5,35 @@ import { getRecommendedEvents, searchEvents } from '../services/event-service';
 import type { Concert } from '../types/concert';
 
 export function Home() {
-  const [concerts, setConcerts] = useState<Concert[]>(getRecommendedEvents());
+  const [concerts, setConcerts] = useState<Concert[]>([]);
   const [query, setQuery] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let isMounted = true;
+
     const timer = setTimeout(async () => {
+      setLoading(true);
+
       if (query.trim().length > 2) {
-        setLoading(true);
         const apiConcerts = await searchEvents(query);
-        setConcerts(apiConcerts);
-        setLoading(false);
-      } else if (query.trim() === '') {
-        setConcerts(getRecommendedEvents());
+        if (isMounted) {
+          setConcerts(apiConcerts);
+          setLoading(false);
+        }
+      } else {
+        const recommended = await getRecommendedEvents();
+        if (isMounted) {
+          setConcerts(recommended);
+          setLoading(false);
+        }
       }
     }, 400);
 
-    return () => clearTimeout(timer);
+    return () => {
+      isMounted = false;
+      clearTimeout(timer);
+    };
   }, [query]);
 
   return (
@@ -34,11 +46,13 @@ export function Home() {
 
         {loading ? (
           <div className="text-center py-10 font-mono text-gray-400">
-            Looking for real concerts on Ticketmaster...
+            Looking for real concerts...
           </div>
         ) : concerts.length === 0 ? (
           <div className="text-center py-10 font-mono text-gray-500">
-            No concerts were found for "{query}".
+            {query.trim()
+              ? `No concerts were found for "${query}".`
+              : 'No recommended concerts available at the moment.'}
           </div>
         ) : (
           <ConcertGrid concerts={concerts} />
