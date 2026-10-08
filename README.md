@@ -67,7 +67,6 @@ Detailed planning is documented in [`USM.md`](/USM.md).
 * Node.js and a package manager: npm or pnpm.
 * Git
 * Vite
-* PostgreSQL
 
 **Setup Instructions** 
 1. **Clone the repository:**
@@ -88,28 +87,13 @@ Start the local environment by running:
 npm run dev  
 This application will be available in your browser
 
-5. **Backend Setup (Server):**
-Open a new terminal and navigate to the server folder:
-    cd server
-
-6. **Install dependencies:**
-Install the required packages by running:
-npm install or pnpm install if you are using pnpm
-
-7. **Database & Environment:**
-Create a `.env` file inside the `server` directory using `.env.example` as a template, filling in your PostgreSQL credentials and a `JWT_SECRET`.
-Then, create a local database in pgAdmin and run the `server/schema.sql` script to generate the required tables.
-
-8. **Run the server:**
-Start the server by running: 
-node server.js
-
-
 ## Documentation
 
-> [!NOTE]
-> This section is under development. Detailed specifications will be added soon.
+Detailed technical specifications and project management guidelines are maintained in the project's [GitHub Wiki](https://github.com/SE-7003-2027/ponys_salvajes_finder_conciertos/wiki).
 
-Further documentation is available in the project's GitHub Wiki.
-
+**Core Documentation:**
+* **[Project Overview & Stack](https://github.com/SE-7003-2027/ponys_salvajes_finder_conciertos/wiki/Home):** User Story Mapping and technology stack.
+* **[Authentication & Sessions](https://github.com/SE-7003-2027/ponys_salvajes_finder_conciertos/wiki/Authentication):** JWT handling and session persistence.
+* **[Event Data & Caching](https://github.com/SE-7003-2027/ponys_salvajes_finder_conciertos/wiki/Event-Data):** Ticketmaster API integration and localStorage specs.
+* **[Search & Routing](https://github.com/SE-7003-2027/ponys_salvajes_finder_conciertos/wiki/Search-and-Routing):** Live search and dynamic artist profiles.
 <p align="center"><sub>Built with 🐴 by Ponys Salvajes</sub></p>
