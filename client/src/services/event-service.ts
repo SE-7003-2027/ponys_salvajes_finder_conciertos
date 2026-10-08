@@ -7,16 +7,35 @@ const CACHE_KEY = 'recommended_concerts_cache';
 const CACHE_TIME = 1000 * 60 * 60;
 
 function cleanResults(rawEvents: TicketmasterEvent[]): Concert[] {
-  return rawEvents.map((event): Concert => ({
-    id: event.id,
-    title: event.name,
-    artistId: event._embedded?.attractions?.[0]?.id || '',
-    artist: event._embedded?.attractions?.[0]?.name || event.name,
-    venue: event._embedded?.venues?.[0]?.name || 'Venue not specified',
-    city: event._embedded?.venues?.[0]?.city?.name || event.place?.city?.name || 'City not specified',
-    date: event.dates?.start?.localDate || 'To be announced',
-    ticketUrl: event.url || 'https://www.ticketmaster.com/',
-  }));
+  return rawEvents.map((event): Concert => {
+    const venueObj = event._embedded?.venues?.[0];
+
+    const address = venueObj?.address?.line1 || 'Address available at venue';
+
+    const imageUrl =
+      event.images?.find((img) => img.ratio === '16_9')?.url ||
+      event.images?.[0]?.url ||
+      '';
+
+    const priceObj = event.priceRanges?.[0];
+    const priceRange = priceObj
+      ? `$${priceObj.min} - $${priceObj.max} ${priceObj.currency || 'USD'}`
+      : 'Check site for prices';
+
+    return {
+      id: event.id,
+      title: event.name,
+      artistId: event._embedded?.attractions?.[0]?.id || '',
+      artist: event._embedded?.attractions?.[0]?.name || event.name,
+      venue: venueObj?.name || 'Venue not specified',
+      city: venueObj?.city?.name || event.place?.city?.name || 'City not specified',
+      date: event.dates?.start?.localDate || 'To be announced',
+      ticketUrl: event.url || 'https://www.ticketmaster.com/',
+      address,
+      imageUrl,
+      priceRange,
+    };
+  });
 }
 
 export async function getRecommendedEvents(): Promise<Concert[]> {
