@@ -64,17 +64,30 @@ export async function getArtistEvents(artistName: string): Promise<Concert[]> {
 
 /**
  * Obtiene la biografía de un artista desde Wikipedia.
+ * Primero busca en Wikipedia en inglés para mayor cobertura.
+ * Usa 'origin=*' para evitar errores CORS.
  */
 export async function getArtistBio(artistName: string): Promise<string> {
   try {
-    const formattedName = encodeURIComponent(artistName.replace(/ /g, '_'));
-    const response = await fetch(
-      `https://es.wikipedia.org/api/rest_v1/page/summary/${formattedName}`
-    );
+    // 1. Buscar en Wikipedia la página más relevante asociada al artista.
+    const searchUrl = `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(artistName + ' band music')}&format=json&origin=*`;
+    const searchRes = await fetch(searchUrl);
+    const searchData = await searchRes.json();
 
-    if (!response.ok) return '';
+    // 2. Extraer el título del primer resultado.
+    const pageTitle = searchData.query?.search[0]?.title || artistName;
 
-    const data = await response.json();
+    // 3. Formatear el título para la URL.
+    const formattedName = encodeURIComponent(pageTitle.replace(/ /g, '_'));
+
+    // 4. Consultar el endpoint de resumen de Wikipedia.
+    const summaryUrl = `https://en.wikipedia.org/api/rest_v1/page/summary/${formattedName}`;
+    const summaryRes = await fetch(summaryUrl);
+
+    if (!summaryRes.ok) return '';
+
+    // 5. Retornar el extracto.
+    const data = await summaryRes.json();
     return data.extract || '';
   } catch (error) {
     console.error('Error fetching bio:', error);
