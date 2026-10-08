@@ -6,7 +6,7 @@ const TM_API_KEY = import.meta.env.VITE_TICKETMASTER_API_KEY
 const CACHE_KEY = 'recommended_concerts_cache';
 const CACHE_TIME = 1000 * 60 * 60;
 
-function cleanResults(rawEvents: TicketmasterEvent[]): Concert[] {
+export function cleanResults(rawEvents: TicketmasterEvent[]): Concert[] {
   return rawEvents.map((event): Concert => {
     const venueObj = event._embedded?.venues?.[0];
 
