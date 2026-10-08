@@ -64,7 +64,6 @@ export async function getArtistEvents(artistName: string): Promise<Concert[]> {
 
 /**
  * Obtiene la biografía de un artista desde Wikipedia.
-<<<<<<< HEAD
  * Primero busca en Wikipedia en inglés para mayor cobertura.
  * Usa 'origin=*' para evitar errores CORS.
  */
@@ -89,19 +88,6 @@ export async function getArtistBio(artistName: string): Promise<string> {
 
     // 5. Retornar el extracto.
     const data = await summaryRes.json();
-=======
- */
-export async function getArtistBio(artistName: string): Promise<string> {
-  try {
-    const formattedName = encodeURIComponent(artistName.replace(/ /g, '_'));
-    const response = await fetch(
-      `https://es.wikipedia.org/api/rest_v1/page/summary/${formattedName}`
-    );
-
-    if (!response.ok) return '';
-
-    const data = await response.json();
->>>>>>> feat/sprint-two-real-events
     return data.extract || '';
   } catch (error) {
     console.error('Error fetching bio:', error);
