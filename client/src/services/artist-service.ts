@@ -1,12 +1,10 @@
 import type { Artist } from '../types/artist';
 import type { Concert } from '../types/concert';
+import { cleanResults } from './event-service';
 
 const TM_API_KEY = import.meta.env.VITE_TICKETMASTER_API_KEY;
 const TM_BASE_URL = 'https://app.ticketmaster.com/discovery/v2';
 
-/**
- * Obtiene la información de un artista desde Ticketmaster.
- */
 export async function getArtistById(artistId: string): Promise<Artist | null> {
   try {
     const response = await fetch(
@@ -30,9 +28,6 @@ export async function getArtistById(artistId: string): Promise<Artist | null> {
   }
 }
 
-/**
- * Obtiene los eventos (conciertos) de un artista desde Ticketmaster.
- */
 export async function getArtistEvents(artistName: string): Promise<Concert[]> {
   try {
     const response = await fetch(
@@ -46,47 +41,28 @@ export async function getArtistEvents(artistName: string): Promise<Concert[]> {
     const data = await response.json();
     const rawEvents = data._embedded?.events || [];
 
-    return rawEvents.map((event: any): Concert => ({
-      id: event.id,
-      title: event.name,
-      artistId: event._embedded?.attractions?.[0]?.id || '',
-      artist: event._embedded?.attractions?.[0]?.name || event.name,
-      venue: event._embedded?.venues?.[0]?.name || 'Venue not specified',
-      city: event._embedded?.venues?.[0]?.city?.name || 'City not specified',
-      date: event.dates?.start?.localDate || 'To be announced',
-      ticketUrl: event.url || 'https://www.ticketmaster.com/',
-    }));
+    return cleanResults(rawEvents);
   } catch (error) {
     console.error('Error fetching artist events:', error);
     return [];
   }
 }
 
-/**
- * Obtiene la biografía de un artista desde Wikipedia.
- * Primero busca en Wikipedia en inglés para mayor cobertura.
- * Usa 'origin=*' para evitar errores CORS.
- */
 export async function getArtistBio(artistName: string): Promise<string> {
   try {
-    // 1. Buscar en Wikipedia la página más relevante asociada al artista.
     const searchUrl = `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(artistName + ' band music')}&format=json&origin=*`;
     const searchRes = await fetch(searchUrl);
     const searchData = await searchRes.json();
 
-    // 2. Extraer el título del primer resultado.
     const pageTitle = searchData.query?.search[0]?.title || artistName;
 
-    // 3. Formatear el título para la URL.
     const formattedName = encodeURIComponent(pageTitle.replace(/ /g, '_'));
 
-    // 4. Consultar el endpoint de resumen de Wikipedia.
     const summaryUrl = `https://en.wikipedia.org/api/rest_v1/page/summary/${formattedName}`;
     const summaryRes = await fetch(summaryUrl);
 
     if (!summaryRes.ok) return '';
 
-    // 5. Retornar el extracto.
     const data = await summaryRes.json();
     return data.extract || '';
   } catch (error) {
