@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { getArtistById, getArtistEvents, getArtistBio } from '../services/artist-service';
 import type { Artist as ArtistType } from '../types/artist';
 import type { Concert } from '../types/concert';
+import { ConcertGrid } from '../components/ConcertGrid';
 
 export function Artist() {
   const { id } = useParams();
@@ -54,7 +55,7 @@ export function Artist() {
 
   return (
     <main className="min-h-screen bg-black text-white p-6">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         <header className="flex flex-col items-center text-center mb-10 mt-6">
           {artist.image ? (
             <img
@@ -83,28 +84,7 @@ export function Artist() {
               No upcoming events found.
             </p>
           ) : (
-            <ul className="flex flex-col gap-4">
-              {events.map((concert) => (
-                <li
-                  key={concert.id}
-                  className="bg-[#121212] border border-[#262626] p-5 rounded-xl shadow-xl hover:bg-[#1a1a1a] transition-colors"
-                >
-                  <div className="flex flex-col gap-1">
-                    <p className="text-lg font-semibold">{concert.venue}</p>
-                    <p className="text-gray-400 text-sm">{concert.city}</p>
-                    <p className="text-gray-400 text-sm">Date: {concert.date}</p>
-                  </div>
-                  <a
-                    href={concert.ticketUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-block mt-4 bg-brand text-white px-5 py-2 rounded-lg font-semibold hover:bg-brand/80 transition-colors cursor-pointer"
-                  >
-                    Buy tickets
-                  </a>
-                </li>
-              ))}
-            </ul>
+            <ConcertGrid concerts={events} />
           )}
         </section>
       </div>
