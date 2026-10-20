@@ -63,12 +63,12 @@ export function Artist() {
               className="w-32 h-32 rounded-full object-cover mb-4 shadow-xl"
             />
           ) : (
-            <div className="w-32 h-32 bg-[#0457cb] rounded-full flex items-center justify-center text-white text-5xl font-bold mb-4 shadow-xl">
+            <div className="w-32 h-32 bg-brand rounded-full flex items-center justify-center text-white text-5xl font-bold mb-4 shadow-xl">
               {artist.name.charAt(0)}
             </div>
           )}
           <h1 className="text-4xl font-bold tracking-tight">{artist.name}</h1>
-          <p className="text-[#0457cb] font-semibold mt-1">{artist.genre}</p>
+          <p className="text-brand font-semibold mt-1">{artist.genre}</p>
           {artist.bio && (
             <p className="text-gray-400 mt-4 max-w-2xl text-sm leading-relaxed">
               {artist.bio}
@@ -98,7 +98,7 @@ export function Artist() {
                     href={concert.ticketUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-block mt-4 bg-[#0457cb] text-white px-5 py-2 rounded-lg font-semibold hover:bg-[#0457cb]/80 transition-colors cursor-pointer"
+                    className="inline-block mt-4 bg-brand text-white px-5 py-2 rounded-lg font-semibold hover:bg-brand/80 transition-colors cursor-pointer"
                   >
                     Buy tickets
                   </a>

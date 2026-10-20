@@ -11,7 +11,7 @@ export function ConcertCard({ concert }: ConcertCardProps) {
   )}`;
 
   return (
-    <li className="bg-[#121212] border border-[#262626] rounded-xl p-5 flex flex-col justify-between gap-4 hover:border-gray-500 transition-all shadow-lg hover:shadow-2xl overflow-hidden">
+    <li className="bg-surface border border-line rounded-xl p-5 flex flex-col justify-between gap-4 hover:border-gray-500 transition-all shadow-lg hover:shadow-2xl overflow-hidden">
 
       {concert.imageUrl && (
         <div className="w-full h-36 rounded-lg overflow-hidden bg-[#1a1a1a]">
@@ -26,10 +26,10 @@ export function ConcertCard({ concert }: ConcertCardProps) {
       <div className="flex flex-col gap-1">
         <Link
           to={`/artist/${concert.artistId}`}
-          className="group flex items-center gap-1.5 text-lg font-bold text-white tracking-tight hover:text-[#FE9511] transition-colors"
+          className="group flex items-center gap-1.5 text-lg font-bold text-white tracking-tight hover:text-accent transition-colors"
         >
           <span className="truncate">{concert.artist}</span>
-          <span className="text-sm text-gray-500 transition-transform group-hover:translate-x-1 group-hover:text-[#FE9511]">
+          <span className="text-sm text-gray-500 transition-transform group-hover:translate-x-1 group-hover:text-accent">
             →
           </span>
         </Link>
@@ -48,12 +48,12 @@ export function ConcertCard({ concert }: ConcertCardProps) {
       </div>
 
       <div className="flex flex-wrap items-center gap-2">
-        <p className="w-fit px-2.5 py-1 rounded-md text-xs font-medium bg-[#1a1a1a] text-gray-300 border border-[#262626]">
+        <p className="w-fit px-2.5 py-1 rounded-md text-xs font-medium bg-surface-raised text-gray-300 border border-line">
           Date: {concert.date}
         </p>
 
         {concert.priceRange && (
-          <p className="w-fit px-2.5 py-1 rounded-md text-xs font-medium bg-[#1a1a1a] text-emerald-400 border border-[#262626]">
+          <p className="w-fit px-2.5 py-1 rounded-md text-xs font-medium bg-surface-raised text-emerald-400 border border-line">
             {concert.priceRange}
           </p>
         )}
@@ -63,7 +63,7 @@ export function ConcertCard({ concert }: ConcertCardProps) {
         href={concert.ticketUrl}
         rel="noreferrer"
         target="_blank"
-        className="block w-full py-2.5 rounded-lg bg-[#0457CB] hover:bg-emerald-600 text-white font-semibold text-xs text-center cursor-pointer transition-colors shadow-md"
+        className="block w-full py-2.5 rounded-lg bg-brand hover:bg-brand-hover text-white font-semibold text-xs text-center cursor-pointer transition-colors shadow-md"
       >
         Buy your tickets here!
       </a>

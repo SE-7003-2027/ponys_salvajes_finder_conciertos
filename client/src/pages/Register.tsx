@@ -7,11 +7,11 @@ export function Register() {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  
+
   // State hooks for UI management (success view and error handling)
   const [isRegistered, setIsRegistered] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  
+
   // Hook to navigate to different routes
   const navigate = useNavigate();
 
@@ -60,9 +60,9 @@ export function Register() {
             <p className="text-emerald-400 font-semibold text-sm">Account created successfully!</p>
             <p className="text-xs text-gray-400">Please log in with your credentials.</p>
             {/* Button to manually navigate the user back to the login screen */}
-            <button 
-              onClick={() => navigate('/')} 
-              className="mt-2 p-3 rounded-lg bg-[#0457CB] hover:bg-[#1877f2] text-white font-semibold text-sm cursor-pointer transition-colors"
+            <button
+              onClick={() => navigate('/')}
+              className="mt-2 p-3 rounded-lg bg-brand hover:bg-brand-hover text-white font-semibold text-sm cursor-pointer transition-colors"
             >
               Go to Log In
             </button>
@@ -70,7 +70,7 @@ export function Register() {
         ) : (
           /* Conditional Rendering: Show the form if not yet registered */
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            
+
             {/* Render error message dynamically */}
             {errorMessage && (
               <p className="text-red-400 text-xs text-center font-medium">{errorMessage}</p>
@@ -137,7 +137,7 @@ export function Register() {
             {/* Submit Registration Button */}
             <button
               type="submit"
-              className="mt-2 p-3 rounded-lg bg-[#0457CB] hover:bg-[#1877f2] text-white font-semibold text-sm cursor-pointer transition-colors shadow-md"
+              className="mt-2 p-3 rounded-lg bg-brand hover:bg-brand-hover text-white font-semibold text-sm cursor-pointer transition-colors shadow-md"
             >
               Sign Up
             </button>
@@ -149,7 +149,7 @@ export function Register() {
           <div className="border-t border-[#262626] pt-4 text-center">
             <p className="text-sm text-gray-400">
               Already have an account?{' '}
-              <Link to="/" className="text-[#0457CB] hover:text-sky-400 font-semibold transition-colors">
+              <Link to="/" className="text-brand hover:text-sky-400 font-semibold transition-colors">
                 Log in
               </Link>
             </p>
