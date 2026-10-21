@@ -2,7 +2,22 @@ import type { Artist } from '../types/artist';
 import type { Concert } from '../types/concert';
 import { fetchAttraction, fetchMusicEvents, mapEvents } from './ticketmaster';
 
-export async function getArtistById(artistId: string): Promise<Artist | null> {
+export async function getArtistProfile(
+  artistId: string
+): Promise<{ artist: Artist; events: Concert[] } | null> {
+  const artist = await getArtistById(artistId);
+  if (!artist) return null;
+
+  const bio = await getArtistBio(artist.name);
+  const events = await getArtistEvents(artist.name);
+
+  return {
+    artist: { ...artist, bio: bio || artist.bio },
+    events,
+  };
+}
+
+async function getArtistById(artistId: string): Promise<Artist | null> {
   try {
     const data = await fetchAttraction(artistId);
 
@@ -19,7 +34,7 @@ export async function getArtistById(artistId: string): Promise<Artist | null> {
   }
 }
 
-export async function getArtistEvents(artistName: string): Promise<Concert[]> {
+async function getArtistEvents(artistName: string): Promise<Concert[]> {
   try {
     return mapEvents(await fetchMusicEvents(artistName));
   } catch (error) {
@@ -28,7 +43,7 @@ export async function getArtistEvents(artistName: string): Promise<Concert[]> {
   }
 }
 
-export async function getArtistBio(artistName: string): Promise<string> {
+async function getArtistBio(artistName: string): Promise<string> {
   try {
     const searchUrl = `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(artistName + ' band music')}&format=json&origin=*`;
     const searchRes = await fetch(searchUrl);

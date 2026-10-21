@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getArtistById, getArtistEvents, getArtistBio } from '../services/artist-service';
+import { getArtistProfile } from '../services/artist-service';
 import type { Artist as ArtistType } from '../types/artist';
 import type { Concert } from '../types/concert';
 import { ConcertGrid } from '../components/ConcertGrid';
@@ -12,26 +12,21 @@ export function Artist() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchData() {
+    async function loadProfile() {
       if (!id) return;
       setLoading(true);
 
-      const artistData = await getArtistById(id);
+      const profile = await getArtistProfile(id);
 
-      if (artistData) {
-        // Obtener biografía de Wikipedia
-        const bio = await getArtistBio(artistData.name);
-        if (bio) artistData.bio = bio;
-
-        setArtist(artistData);
-
-        const eventsData = await getArtistEvents(artistData.name);
-        setEvents(eventsData);
+      if (profile) {
+        setArtist(profile.artist);
+        setEvents(profile.events);
       }
 
       setLoading(false);
     }
-    fetchData();
+
+    loadProfile();
   }, [id]);
 
   if (loading) {
