@@ -35,7 +35,7 @@ export function Register() {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-black text-white font-sans p-4">
-      <div className="bg-[#121212] border border-[#262626] text-white p-8 rounded-xl shadow-2xl w-full max-w-sm flex flex-col gap-6">
+      <div className="bg-surface border border-line text-white p-8 rounded-xl shadow-2xl w-full max-w-sm flex flex-col gap-6">
         <h2 className="text-2xl font-bold text-center tracking-tight">Create Account 🐴</h2>
 
         {/* Conditional Rendering: Show success message if registration is complete */}
@@ -106,7 +106,7 @@ export function Register() {
 
         {/* Hide the login link if the user has successfully registered */}
         {!isRegistered && (
-          <div className="border-t border-[#262626] pt-4 text-center">
+          <div className="border-t border-line pt-4 text-center">
             <p className="text-sm text-gray-400">
               Already have an account?{' '}
               <Link to="/" className="text-brand hover:text-sky-400 font-semibold transition-colors">

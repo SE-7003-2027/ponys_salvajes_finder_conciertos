@@ -14,7 +14,7 @@ export function ConcertCard({ concert }: ConcertCardProps) {
     <li className="bg-surface border border-line rounded-xl p-5 flex flex-col justify-between gap-4 hover:border-gray-500 transition-all shadow-lg hover:shadow-2xl overflow-hidden">
 
       {concert.imageUrl && (
-        <div className="w-full h-36 rounded-lg overflow-hidden bg-[#1a1a1a]">
+        <div className="w-full h-36 rounded-lg overflow-hidden bg-surface-raised">
           <img
             src={concert.imageUrl}
             alt={concert.artist}

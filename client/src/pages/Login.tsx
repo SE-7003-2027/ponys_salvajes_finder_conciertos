@@ -40,7 +40,7 @@ export function Login() {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-black text-white font-sans p-4">
-      <div className="bg-[#121212] border border-[#262626] text-white p-8 rounded-xl shadow-2xl w-full max-w-sm flex flex-col gap-6">
+      <div className="bg-surface border border-line text-white p-8 rounded-xl shadow-2xl w-full max-w-sm flex flex-col gap-6">
         <h2 className="text-2xl font-bold text-center tracking-tight">Log In 🐴</h2>
 
         {/* Login Form */}
@@ -76,7 +76,7 @@ export function Login() {
         </form>
 
         {/* Navigation link to the Registration page */}
-        <div className="border-t border-[#262626] pt-4 text-center">
+        <div className="border-t border-line pt-4 text-center">
           <p className="text-sm text-gray-400">
             Don't have an account?{' '}
             <Link to="/register" className="text-brand hover:text-sky-400 font-semibold transition-colors">
