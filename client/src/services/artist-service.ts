@@ -1,19 +1,10 @@
 import type { Artist } from '../types/artist';
 import type { Concert } from '../types/concert';
-import { cleanResults } from './event-service';
-
-const TM_API_KEY = import.meta.env.VITE_TICKETMASTER_API_KEY;
-const TM_BASE_URL = 'https://app.ticketmaster.com/discovery/v2';
+import { fetchAttraction, fetchMusicEvents, mapEvents } from './ticketmaster';
 
 export async function getArtistById(artistId: string): Promise<Artist | null> {
   try {
-    const response = await fetch(
-      `${TM_BASE_URL}/attractions/${artistId}.json?apikey=${TM_API_KEY}`
-    );
-
-    if (!response.ok) throw new Error('Error fetching artist');
-
-    const data = await response.json();
+    const data = await fetchAttraction(artistId);
 
     return {
       id: data.id,
@@ -30,18 +21,7 @@ export async function getArtistById(artistId: string): Promise<Artist | null> {
 
 export async function getArtistEvents(artistName: string): Promise<Concert[]> {
   try {
-    const response = await fetch(
-      `${TM_BASE_URL}/events.json?keyword=${encodeURIComponent(
-        artistName
-      )}&classificationName=music&size=12&apikey=${TM_API_KEY}`
-    );
-
-    if (!response.ok) throw new Error('Error fetching events');
-
-    const data = await response.json();
-    const rawEvents = data._embedded?.events || [];
-
-    return cleanResults(rawEvents);
+    return mapEvents(await fetchMusicEvents(artistName));
   } catch (error) {
     console.error('Error fetching artist events:', error);
     return [];
