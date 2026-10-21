@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { postJson } from '../services/http';
 import { useNavigate, Link } from 'react-router-dom';
 
 export function Register() {
@@ -23,28 +24,10 @@ export function Register() {
     // Validate that all fields contain data before making the API call
     if (firstName && lastName && email && password) {
       try {
-        // Send registration data to the backend API via POST request
-        const response = await fetch('http://localhost:3000/api/register', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ firstName, lastName, email, password }), // Payload mapping
-        });
-
-        // Parse server response
-        const data = await response.json();
-
-        if (response.ok) {
-          // Display success view by updating the state flag if account was created
-          setIsRegistered(true);
-        } else {
-          // Show specific error from server (e.g., "Email already exists")
-          setErrorMessage(data.error || 'Error registering account');
-        }
+        await postJson('/api/register', { firstName, lastName, email, password });
+        setIsRegistered(true);
       } catch (error) {
-        // Fallback error for network issues
-        setErrorMessage('Error connecting to the server');
+        setErrorMessage(error instanceof Error ? error.message : 'Error registering account');
       }
     }
   };

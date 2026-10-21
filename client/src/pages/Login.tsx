@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { postJson } from '../services/http';
 import { useNavigate, Link } from 'react-router-dom';
 
 export function Login() {
@@ -27,31 +28,11 @@ export function Login() {
     // Ensure both fields are filled before sending the request
     if (email && password) {
       try {
-        // Send a POST request to the local Express backend
-        const response = await fetch('http://localhost:3000/api/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ email, password }), // Convert state to JSON payload
-        });
-
-        // Parse the JSON response from the server
-        const data = await response.json();
-
-        // If the response is successful (status 200-299) and contains a token
-        if (response.ok && data.token) {
-          // Save the JWT token to localStorage for persistent sessions
-          localStorage.setItem('token', data.token);
-          // Redirect the user to the home page
-          navigate('/home');
-        } else {
-          // Display the error returned by the server or a default message
-          setErrorMessage(data.error || 'Invalid credentials');
-        }
+        const data = await postJson<{ token: string }>('/api/login', { email, password });
+        localStorage.setItem('token', data.token);
+        navigate('/home');
       } catch (error) {
-        // Handle network errors or server downtime
-        setErrorMessage('Error connecting to the server');
+        setErrorMessage(error instanceof Error ? error.message : 'Invalid credentials');
       }
     }
   };
