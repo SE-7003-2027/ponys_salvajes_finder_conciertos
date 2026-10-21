@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { postJson } from '../services/http';
 import { useNavigate, Link } from 'react-router-dom';
+import { TextField } from '../components/TextField';
 
 export function Register() {
   // State hooks for form fields
@@ -53,71 +54,47 @@ export function Register() {
         ) : (
           /* Conditional Rendering: Show the form if not yet registered */
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-
-            {/* Render error message dynamically */}
             {errorMessage && (
               <p className="text-red-400 text-xs text-center font-medium">{errorMessage}</p>
             )}
 
             <div className="flex gap-4">
-              {/* First Name Input */}
-              <div className="flex flex-col gap-1.5 text-left w-1/2">
-                <label htmlFor="firstName" className="text-xs text-gray-400 font-medium">First Name</label>
-                <input
-                  id="firstName"
-                  type="text"
-                  placeholder="John"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)} // Bind input to state
-                  required
-                  className="p-3 rounded-lg border border-[#262626] bg-[#1a1a1a] text-white text-sm focus:outline-none focus:border-gray-500 placeholder-gray-600 transition-all w-full"
-                />
-              </div>
-
-              {/* Last Name Input */}
-              <div className="flex flex-col gap-1.5 text-left w-1/2">
-                <label htmlFor="lastName" className="text-xs text-gray-400 font-medium">Last Name</label>
-                <input
-                  id="lastName"
-                  type="text"
-                  placeholder="Doe"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)} // Bind input to state
-                  required
-                  className="p-3 rounded-lg border border-[#262626] bg-[#1a1a1a] text-white text-sm focus:outline-none focus:border-gray-500 placeholder-gray-600 transition-all w-full"
-                />
-              </div>
-            </div>
-
-            {/* Email Input */}
-            <div className="flex flex-col gap-1.5 text-left">
-              <label htmlFor="email" className="text-xs text-gray-400 font-medium">Email address</label>
-              <input
-                id="email"
-                type="email"
-                placeholder="example@email.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="p-3 rounded-lg border border-[#262626] bg-[#1a1a1a] text-white text-sm focus:outline-none focus:border-gray-500 placeholder-gray-600 transition-all"
+              <TextField
+                id="firstName"
+                label="First Name"
+                placeholder="John"
+                value={firstName}
+                onChange={setFirstName}
+                className="w-1/2"
+              />
+              <TextField
+                id="lastName"
+                label="Last Name"
+                placeholder="Doe"
+                value={lastName}
+                onChange={setLastName}
+                className="w-1/2"
               />
             </div>
 
-            {/* Password Input */}
-            <div className="flex flex-col gap-1.5 text-left">
-              <label htmlFor="password" className="text-xs text-gray-400 font-medium">Password</label>
-              <input
-                id="password"
-                type="password"
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="p-3 rounded-lg border border-[#262626] bg-[#1a1a1a] text-white text-sm focus:outline-none focus:border-gray-500 placeholder-gray-600 transition-all"
-              />
-            </div>
+            <TextField
+              id="email"
+              label="Email address"
+              type="email"
+              placeholder="example@email.com"
+              value={email}
+              onChange={setEmail}
+            />
 
-            {/* Submit Registration Button */}
+            <TextField
+              id="password"
+              label="Password"
+              type="password"
+              placeholder="••••••••"
+              value={password}
+              onChange={setPassword}
+            />
+
             <button
               type="submit"
               className="mt-2 p-3 rounded-lg bg-brand hover:bg-brand-hover text-white font-semibold text-sm cursor-pointer transition-colors shadow-md"
