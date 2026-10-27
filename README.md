@@ -89,9 +89,11 @@ This application will be available in your browser
 
 ## Documentation
 
-> [!NOTE]
-> This section is under development. Detailed specifications will be added soon.
+Detailed technical specifications and project management guidelines are maintained in the project's [GitHub Wiki](https://github.com/SE-7003-2027/ponys_salvajes_finder_conciertos/wiki).
 
-Further documentation is available in the project's GitHub Wiki.
-
+**Core Documentation:**
+* **[Project Overview & Stack](https://github.com/SE-7003-2027/ponys_salvajes_finder_conciertos/wiki/Home):** User Story Mapping and technology stack.
+* **[Authentication & Sessions](https://github.com/SE-7003-2027/ponys_salvajes_finder_conciertos/wiki/Authentication):** JWT handling and session persistence.
+* **[Event Data & Caching](https://github.com/SE-7003-2027/ponys_salvajes_finder_conciertos/wiki/Event-Data):** Ticketmaster API integration and localStorage specs.
+* **[Search & Routing](https://github.com/SE-7003-2027/ponys_salvajes_finder_conciertos/wiki/Search-and-Routing):** Live search and dynamic artist profiles.
 <p align="center"><sub>Built with 🐴 by Ponys Salvajes</sub></p>
