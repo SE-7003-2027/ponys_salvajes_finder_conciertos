@@ -1,19 +1,25 @@
 import type { Artist } from '../types/artist';
 import type { Concert } from '../types/concert';
-import { cleanResults } from './event-service';
+import { fetchAttraction, fetchMusicEvents, mapEvents } from './ticketmaster';
 
-const TM_API_KEY = import.meta.env.VITE_TICKETMASTER_API_KEY;
-const TM_BASE_URL = 'https://app.ticketmaster.com/discovery/v2';
+export async function getArtistProfile(
+  artistId: string
+): Promise<{ artist: Artist; events: Concert[] } | null> {
+  const artist = await getArtistById(artistId);
+  if (!artist) return null;
 
-export async function getArtistById(artistId: string): Promise<Artist | null> {
+  const bio = await getArtistBio(artist.name);
+  const events = await getArtistEvents(artist.name);
+
+  return {
+    artist: { ...artist, bio: bio || artist.bio },
+    events,
+  };
+}
+
+async function getArtistById(artistId: string): Promise<Artist | null> {
   try {
-    const response = await fetch(
-      `${TM_BASE_URL}/attractions/${artistId}.json?apikey=${TM_API_KEY}`
-    );
-
-    if (!response.ok) throw new Error('Error fetching artist');
-
-    const data = await response.json();
+    const data = await fetchAttraction(artistId);
 
     return {
       id: data.id,
@@ -28,27 +34,16 @@ export async function getArtistById(artistId: string): Promise<Artist | null> {
   }
 }
 
-export async function getArtistEvents(artistName: string): Promise<Concert[]> {
+async function getArtistEvents(artistName: string): Promise<Concert[]> {
   try {
-    const response = await fetch(
-      `${TM_BASE_URL}/events.json?keyword=${encodeURIComponent(
-        artistName
-      )}&classificationName=music&size=12&apikey=${TM_API_KEY}`
-    );
-
-    if (!response.ok) throw new Error('Error fetching events');
-
-    const data = await response.json();
-    const rawEvents = data._embedded?.events || [];
-
-    return cleanResults(rawEvents);
+    return mapEvents(await fetchMusicEvents(artistName));
   } catch (error) {
     console.error('Error fetching artist events:', error);
     return [];
   }
 }
 
-export async function getArtistBio(artistName: string): Promise<string> {
+async function getArtistBio(artistName: string): Promise<string> {
   try {
     const searchUrl = `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(artistName + ' band music')}&format=json&origin=*`;
     const searchRes = await fetch(searchUrl);

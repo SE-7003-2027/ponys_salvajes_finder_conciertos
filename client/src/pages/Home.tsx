@@ -4,6 +4,9 @@ import { ConcertGrid } from '../components/ConcertGrid';
 import { getRecommendedEvents, searchEvents } from '../services/event-service';
 import type { Concert } from '../types/concert';
 
+const SEARCH_DEBOUNCE_MS = 400;
+const MIN_QUERY_LENGTH = 3;
+
 export function Home() {
   const [concerts, setConcerts] = useState<Concert[]>([]);
   const [query, setQuery] = useState('');
@@ -15,20 +18,17 @@ export function Home() {
     const timer = setTimeout(async () => {
       setLoading(true);
 
-      if (query.trim().length > 2) {
-        const apiConcerts = await searchEvents(query);
-        if (isMounted) {
-          setConcerts(apiConcerts);
-          setLoading(false);
-        }
-      } else {
-        const recommended = await getRecommendedEvents();
-        if (isMounted) {
-          setConcerts(recommended);
-          setLoading(false);
-        }
+      const shouldSearch = query.trim().length >= MIN_QUERY_LENGTH;
+
+      const results = shouldSearch
+        ? await searchEvents(query)
+        : await getRecommendedEvents();
+
+      if (isMounted) {
+        setConcerts(results);
+        setLoading(false);
       }
-    }, 400);
+    }, SEARCH_DEBOUNCE_MS);
 
     return () => {
       isMounted = false;
@@ -39,7 +39,7 @@ export function Home() {
   return (
     <main className="min-h-screen bg-black text-white font-sans p-6">
       <div className="max-w-6xl mx-auto w-full">
-        <header className="border-b border-[#262626] pb-6 mb-8">
+        <header className="border-b border-line pb-6 mb-8">
           <h1>Concert Finder 🐴</h1>
           <Navbar query={query} onSearch={setQuery} />
         </header>
