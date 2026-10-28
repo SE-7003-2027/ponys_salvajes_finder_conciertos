@@ -11,7 +11,34 @@ export function Home() {
   const [concerts, setConcerts] = useState<Concert[]>([]);
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(true);
+  
+  // State to track if the current user has already linked their Spotify account
+  const [isSpotifyLinked, setIsSpotifyLinked] = useState(false);
 
+  // Effect to verify the Spotify linking status when the component mounts
+  useEffect(() => {
+    const checkSpotifyStatus = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) return;
+
+      try {
+        const response = await fetch('http://localhost:3000/api/account/status', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          setIsSpotifyLinked(data.isSpotifyLinked);
+        }
+      } catch (error) {
+        console.error('Error checking Spotify status:', error);
+      }
+    };
+
+    checkSpotifyStatus();
+  }, []);
+
+  // Effect to handle searching vs fetching recommended events based on user input
   useEffect(() => {
     let isMounted = true;
 
@@ -59,13 +86,19 @@ export function Home() {
             <Navbar query={query} onSearch={setQuery} />
           </div>
           
-          {/* Spotify Linking Button */}
-          <button
-            onClick={handleSpotifyLink}
-            className="px-4 py-2 rounded-lg bg-[#1DB954] hover:bg-[#1ed760] text-black font-bold text-sm transition-colors shadow-md flex items-center gap-2"
-          >
-            Link Spotify Account
-          </button>
+          {/* Conditional rendering based on Spotify connection status */}
+          {isSpotifyLinked ? (
+            <div className="px-4 py-2 rounded-lg bg-[#1DB954]/20 border border-[#1DB954] text-[#1DB954] font-bold text-sm flex items-center gap-2">
+              <span>✓</span> Spotify Connected
+            </div>
+          ) : (
+            <button
+              onClick={handleSpotifyLink}
+              className="px-4 py-2 rounded-lg bg-[#1DB954] hover:bg-[#1ed760] text-black font-bold text-sm transition-colors shadow-md flex items-center gap-2 cursor-pointer"
+            >
+              Link Spotify Account
+            </button>
+          )}
         </header>
 
         {loading ? (
