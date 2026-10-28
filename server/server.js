@@ -170,7 +170,6 @@ app.post('/api/spotify/login', async (req, res) => {
     const userAccount = result.rows[0];
     
     // Update the tokens in the database to ensure we always have valid credentials
-    // Note: Spotify might not always return a new refresh token, so we keep the old one if missing
     const encryptedAccessToken = encrypt(tokenData.access_token);
     const encryptedRefreshToken = tokenData.refresh_token 
       ? encrypt(tokenData.refresh_token) 
@@ -191,6 +190,32 @@ app.post('/api/spotify/login', async (req, res) => {
     res.json({ message: 'Authentication successful', token });
   } catch (error) {
     res.status(500).json({ error: 'Error authenticating with Spotify' });
+  }
+});
+
+// Endpoint 3: Check current user's account status (e.g., verify if Spotify is linked)
+app.get('/api/account/status', async (req, res) => {
+  const authHeader = req.headers['authorization'];
+  
+  if (!authHeader) return res.status(401).json({ error: 'No token provided' });
+  const token = authHeader.split(' ')[1];
+
+  try {
+    // 1. Authenticate user via JWT
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    
+    // 2. Query the database to see if the spotify_id exists for this user
+    const result = await pool.query('SELECT spotify_id FROM account WHERE id = $1', [decoded.accountId]);
+    
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // 3. Return a boolean indicating whether the account is successfully linked
+    const isLinked = result.rows[0].spotify_id !== null;
+    res.json({ isSpotifyLinked: isLinked });
+  } catch (error) {
+    res.status(401).json({ error: 'Invalid token' });
   }
 });
 
