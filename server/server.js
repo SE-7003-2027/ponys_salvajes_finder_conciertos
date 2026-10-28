@@ -154,33 +154,55 @@ app.post('/api/spotify/link', async (req, res) => {
   }
 });
 
-// Endpoint 2: Log in directly using a previously linked Spotify account
+// Endpoint 2: Log in OR register directly using Spotify OAuth
 app.post('/api/spotify/login', async (req, res) => {
   const { code } = req.body;
   try {
     const { profile, tokenData } = await getSpotifyData(code);
     
-    // Check if the retrieved spotify_id is already linked to a registered user
-    const result = await pool.query('SELECT * FROM account WHERE spotify_id = $1', [profile.id]);
-    
-    if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'Spotify account not linked to any user' });
+    // 1. Check if an account already exists with this spotify_id
+    let result = await pool.query('SELECT * FROM account WHERE spotify_id = $1', [profile.id]);
+    let userAccount = result.rows[0];
+
+    // 2. If no account matches spotify_id, check by email or create a new user account
+    if (!userAccount) {
+      const emailUser = profile.email || `${profile.id}@spotify.com`;
+      const emailResult = await pool.query('SELECT * FROM account WHERE email = $1', [emailUser]);
+      
+      if (emailResult.rows.length > 0) {
+        // Existing user matching by email: link Spotify account
+        userAccount = emailResult.rows[0];
+      } else {
+        // New user: parse display name
+        const nameParts = (profile.display_name || 'Spotify User').trim().split(' ');
+        const firstName = nameParts[0] || 'Spotify';
+        const lastName = nameParts.slice(1).join(' ') || 'User';
+
+        // Generate a random dummy hashed password to satisfy PostgreSQL NOT NULL constraint
+        const randomPassword = crypto.randomBytes(16).toString('hex');
+        const dummyPasswordHash = await bcrypt.hash(randomPassword, 10);
+
+        const newAccount = await pool.query(
+          'INSERT INTO account (first_name, last_name, email, password, spotify_id) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+          [firstName, lastName, emailUser, dummyPasswordHash, profile.id]
+        );
+        userAccount = newAccount.rows[0];
+      }
     }
     
-    const userAccount = result.rows[0];
-    
-    // Update the tokens in the database to ensure we always have valid credentials
+    // 3. Encrypt access and refresh tokens
     const encryptedAccessToken = encrypt(tokenData.access_token);
     const encryptedRefreshToken = tokenData.refresh_token 
       ? encrypt(tokenData.refresh_token) 
       : userAccount.spotify_refresh_token;
       
+    // 4. Update the account record with spotify_id and encrypted tokens
     await pool.query(
-      'UPDATE account SET spotify_access_token = $1, spotify_refresh_token = $2 WHERE id = $3',
-      [encryptedAccessToken, encryptedRefreshToken, userAccount.id]
+      'UPDATE account SET spotify_id = $1, spotify_access_token = $2, spotify_refresh_token = $3 WHERE id = $4',
+      [profile.id, encryptedAccessToken, encryptedRefreshToken, userAccount.id]
     );
     
-    // Generate the standard application session token for the user
+    // 5. Generate application session JWT
     const token = jwt.sign(
       { accountId: userAccount.id }, 
       process.env.JWT_SECRET, 
@@ -189,6 +211,7 @@ app.post('/api/spotify/login', async (req, res) => {
     
     res.json({ message: 'Authentication successful', token });
   } catch (error) {
+    console.error('Spotify Auth Error:', error);
     res.status(500).json({ error: 'Error authenticating with Spotify' });
   }
 });
