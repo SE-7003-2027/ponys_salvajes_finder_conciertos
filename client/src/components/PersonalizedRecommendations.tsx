@@ -38,11 +38,12 @@ export function PersonalizedRecommendations({
         if (!active) return;
         setArtists(result.artists);
         setConcerts(result.concerts);
+        setFailed(false);
         setLoading(false);
       })
       .catch(() => {
         if (!active) return;
-        setFailed(false);
+        setFailed(true);
         setLoading(false);
       });
 
