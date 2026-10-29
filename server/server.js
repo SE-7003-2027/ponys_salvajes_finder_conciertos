@@ -49,11 +49,11 @@ function decrypt(text) {
 
 // Register a new user account with hashed passwords
 app.post('/api/register', async (req, res) => {
-  const { firstName, lastName, email, password } = req.body; 
+  const { firstName, lastName, email, password } = req.body;
   try {
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
-    
+
     const result = await pool.query(
       'INSERT INTO account (first_name, last_name, email, password) VALUES ($1, $2, $3, $4) RETURNING id, email',
       [firstName, lastName, email, hashedPassword]
@@ -73,19 +73,19 @@ app.post('/api/login', async (req, res) => {
     if (result.rows.length === 0) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
-    
+
     const userAccount = result.rows[0];
-    
+
     // Verify that the provided password matches the hashed one in the database
     const isMatch = await bcrypt.compare(password, userAccount.password);
     if (!isMatch) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
-    
+
     // Generate an application session token valid for 2 hours
     const token = jwt.sign(
-      { accountId: userAccount.id }, 
-      process.env.JWT_SECRET, 
+      { accountId: userAccount.id },
+      process.env.JWT_SECRET,
       { expiresIn: '2h' }
     );
     res.json({ message: 'Authentication successful', token });
@@ -109,7 +109,7 @@ async function getSpotifyData(code) {
       redirect_uri: process.env.SPOTIFY_REDIRECT_URI
     })
   });
-  
+
   const tokenData = await tokenResponse.json();
   if (!tokenResponse.ok) throw new Error('Error fetching Spotify token');
 
@@ -118,7 +118,7 @@ async function getSpotifyData(code) {
     headers: { 'Authorization': 'Bearer ' + tokenData.access_token }
   });
   const profile = await profileResponse.json();
-  
+
   // Return both profile and tokens to process them in the respective endpoint
   return { profile, tokenData };
 }
@@ -127,27 +127,27 @@ async function getSpotifyData(code) {
 app.post('/api/spotify/link', async (req, res) => {
   const { code } = req.body;
   const authHeader = req.headers['authorization'];
-  
+
   if (!authHeader) return res.status(401).json({ error: 'No token provided' });
   const jwtToken = authHeader.split(' ')[1];
 
   try {
     // 1. Verify the current user's session JWT
     const decoded = jwt.verify(jwtToken, process.env.JWT_SECRET);
-    
+
     // 2. Retrieve user ID and tokens from Spotify using the authorization code
     const { profile, tokenData } = await getSpotifyData(code);
-    
+
     // 3. Encrypt the Spotify tokens before storing them in the database for security
     const encryptedAccessToken = encrypt(tokenData.access_token);
     const encryptedRefreshToken = encrypt(tokenData.refresh_token);
-    
+
     // 4. Update the account record with the spotify_id and the encrypted tokens
     await pool.query(
       'UPDATE account SET spotify_id = $1, spotify_access_token = $2, spotify_refresh_token = $3 WHERE id = $4',
       [profile.id, encryptedAccessToken, encryptedRefreshToken, decoded.accountId]
     );
-    
+
     res.json({ message: 'Spotify account linked successfully' });
   } catch (error) {
     res.status(500).json({ error: 'Internal error or invalid token' });
@@ -159,7 +159,7 @@ app.post('/api/spotify/login', async (req, res) => {
   const { code } = req.body;
   try {
     const { profile, tokenData } = await getSpotifyData(code);
-    
+
     // 1. Check if an account already exists with this spotify_id
     let result = await pool.query('SELECT * FROM account WHERE spotify_id = $1', [profile.id]);
     let userAccount = result.rows[0];
@@ -168,7 +168,7 @@ app.post('/api/spotify/login', async (req, res) => {
     if (!userAccount) {
       const emailUser = profile.email || `${profile.id}@spotify.com`;
       const emailResult = await pool.query('SELECT * FROM account WHERE email = $1', [emailUser]);
-      
+
       if (emailResult.rows.length > 0) {
         // Existing user matching by email: link Spotify account
         userAccount = emailResult.rows[0];
@@ -189,26 +189,26 @@ app.post('/api/spotify/login', async (req, res) => {
         userAccount = newAccount.rows[0];
       }
     }
-    
+
     // 3. Encrypt access and refresh tokens
     const encryptedAccessToken = encrypt(tokenData.access_token);
-    const encryptedRefreshToken = tokenData.refresh_token 
-      ? encrypt(tokenData.refresh_token) 
+    const encryptedRefreshToken = tokenData.refresh_token
+      ? encrypt(tokenData.refresh_token)
       : userAccount.spotify_refresh_token;
-      
+
     // 4. Update the account record with spotify_id and encrypted tokens
     await pool.query(
       'UPDATE account SET spotify_id = $1, spotify_access_token = $2, spotify_refresh_token = $3 WHERE id = $4',
       [profile.id, encryptedAccessToken, encryptedRefreshToken, userAccount.id]
     );
-    
+
     // 5. Generate application session JWT
     const token = jwt.sign(
-      { accountId: userAccount.id }, 
-      process.env.JWT_SECRET, 
+      { accountId: userAccount.id },
+      process.env.JWT_SECRET,
       { expiresIn: '2h' }
     );
-    
+
     res.json({ message: 'Authentication successful', token });
   } catch (error) {
     console.error('Spotify Auth Error:', error);
@@ -219,17 +219,17 @@ app.post('/api/spotify/login', async (req, res) => {
 // Endpoint 3: Check current user's account status (e.g., verify if Spotify is linked)
 app.get('/api/account/status', async (req, res) => {
   const authHeader = req.headers['authorization'];
-  
+
   if (!authHeader) return res.status(401).json({ error: 'No token provided' });
   const token = authHeader.split(' ')[1];
 
   try {
     // 1. Authenticate user via JWT
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    
+
     // 2. Query the database to see if the spotify_id exists for this user
     const result = await pool.query('SELECT spotify_id FROM account WHERE id = $1', [decoded.accountId]);
-    
+
     if (result.rows.length === 0) {
       return res.status(404).json({ error: 'User not found' });
     }
@@ -238,6 +238,47 @@ app.get('/api/account/status', async (req, res) => {
     const isLinked = result.rows[0].spotify_id !== null;
     res.json({ isSpotifyLinked: isLinked });
   } catch (error) {
+    res.status(401).json({ error: 'Invalid token' });
+  }
+});
+
+app.get('/api/spotify/top-artists', async (req, res) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader) return res.status(401).json({ error: 'No token provided' });
+
+  try {
+    const decoded = jwt.verify(authHeader.split(' ')[1], process.env.JWT_SECRET);
+
+    const result = await pool.query(
+      'SELECT spotify_access_token FROM account WHERE id = $1',
+      [decoded.accountId]
+    );
+
+    const encryptedToken = result.rows[0]?.spotify_access_token;
+    if (!encryptedToken) return res.json({ artists: [] });
+
+    const accessToken = decrypt(encryptedToken);
+
+    const response = await fetch(
+      'https://api.spotify.com/v1/me/top/artists?limit=10&time_range=medium_term',
+      { headers: { Authorization: `Bearer ${accessToken}` } }
+    );
+
+    if (!response.ok) {
+      return res.status(502).json({ error: 'Spotify session expired' });
+    }
+
+    const data = await response.json();
+
+    res.json({
+      artists: (data.items ?? []).map((artist) => ({
+        id: artist.id,
+        name: artist.name,
+        url: artist.external_urls?.spotify ?? '',
+        image: artist.images?.[0] ?? null,
+      })),
+    });
+  } catch {
     res.status(401).json({ error: 'Invalid token' });
   }
 });
