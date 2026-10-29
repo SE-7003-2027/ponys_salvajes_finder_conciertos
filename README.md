@@ -64,7 +64,7 @@ Detailed planning is documented in [`USM.md`](/USM.md).
 
 ## How to run it
 **Requirements**
-* Node.js and a package manager: npm or pnpm.
+* Node.js 20 or newer and a package manager: npm or pnpm.
 * Git
 * Vite
 
@@ -79,13 +79,22 @@ Install the required packages by running:
 npm install or pnpm install if you are using pnpm
 
 3. **Environment Variables:** 
-Create a .env file in the root directory to store your local credentials (Such as Spotify API, Ticketmaster API, and PostgreSQL connections URIs)
-Note: Never commit this file,Make sure .env is listed in your .gitignore
+The client and the server each have their own `.env`. Copy the examples and fill in your values:
+   ```bash
+   cp client/.env.example client/.env
+   cp server/.env.example server/.env
+   ```
+   * `TICKETMASTER_API_KEY` (server) and `VITE_TICKETMASTER_API_KEY` (client): your [Ticketmaster Discovery API](https://developer.ticketmaster.com/) key.
+   * `SPOTIFY_CLIENT_ID` and `SPOTIFY_CLIENT_SECRET` (server, optional): credentials of a Spotify app. Without them the artist discography comes from MusicBrainz, and the Spotify button and player still work. Creating a Spotify app in development mode requires a Spotify Premium account.
 
-4. **Run the development server:**
-Start the local environment by running: 
-npm run dev  
-This application will be available in your browser
+   Note: never commit these files. `.env` is already listed in `.gitignore`.
+
+4. **Run the server and the client** (in two terminals):
+   ```bash
+   cd server && npm install && npm run dev   # API on http://localhost:3000
+   cd client && npm install && npm run dev   # app on http://localhost:5173
+   ```
+   Run the server tests with `cd server && npm test`.
 
 ## Documentation
 
