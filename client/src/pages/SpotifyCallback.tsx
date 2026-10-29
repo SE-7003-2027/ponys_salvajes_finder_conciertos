@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 export function SpotifyCallback() {
@@ -6,7 +6,7 @@ export function SpotifyCallback() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState('');
-  
+
   // Ref to prevent double execution in React Strict Mode
   const hasProcessed = useRef(false);
 
@@ -18,6 +18,7 @@ export function SpotifyCallback() {
 
     // Handle user denying access on the Spotify consent screen
     if (error) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setErrorMessage('Access denied by Spotify.');
       setTimeout(() => navigate(state === 'link' ? '/home' : '/login'), 3000);
       return;
@@ -44,7 +45,7 @@ export function SpotifyCallback() {
         const headers: HeadersInit = {
           'Content-Type': 'application/json',
         };
-        
+
         if (isLinking && currentToken) {
           headers['Authorization'] = `Bearer ${currentToken}`;
         }
@@ -61,7 +62,7 @@ export function SpotifyCallback() {
         if (!response.ok) {
           throw new Error(data.error || 'Authentication failed');
         }
-        
+
         if (isLinking) {
           // Redirect back to home after successfully linking the account
           navigate('/home');
