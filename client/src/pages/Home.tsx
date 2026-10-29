@@ -1,8 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Navbar } from '../components/Navbar';
 import { ConcertGrid } from '../components/ConcertGrid';
 import { PersonalizedRecommendations } from '../components/PersonalizedRecommendations';
 import { getRecommendedEvents, searchEvents } from '../services/event-service';
+import { mapEvents } from '../services/ticketmaster';
+import { useDebounce } from '../hooks/useDebounce';
+import type { SearchSuggestion } from '../components/SearchBar';
 import type { Concert } from '../types/concert';
 
 const SEARCH_DEBOUNCE_MS = 400;
@@ -12,6 +15,16 @@ export function Home() {
   const [concerts, setConcerts] = useState<Concert[]>([]);
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(true);
+  const [suggestions, setSuggestions] = useState<SearchSuggestion[]>([]);
+  const [suggestionsLoading, setSuggestionsLoading] = useState(false);
+  const debouncedQuery = useDebounce(query, SEARCH_DEBOUNCE_MS);
+  
+  const handleSuggestionsChange = useCallback(
+    (next: SearchSuggestion[], isLoading: boolean) => {
+      setSuggestions(next);
+      setSuggestionsLoading(isLoading);
+    },[],
+  );
 
   // State to track if the current user has already linked their Spotify account
   const [isSpotifyLinked, setIsSpotifyLinked] = useState(false);
@@ -41,28 +54,32 @@ export function Home() {
 
   // Effect to handle searching vs fetching recommended events based on user input
   useEffect(() => {
+    if (suggestions.length > 0 || suggestionsLoading) return;
     let isMounted = true;
+    setLoading(true);
 
-    const timer = setTimeout(async () => {
-      setLoading(true);
+    const shouldSearch = debouncedQuery.trim().length >= MIN_QUERY_LENGTH;
 
-      const shouldSearch = query.trim().length >= MIN_QUERY_LENGTH;
-
-      const results = shouldSearch
-        ? await searchEvents(query)
-        : await getRecommendedEvents();
-
+    (shouldSearch
+      ? searchEvents(debouncedQuery)
+      : getRecommendedEvents()
+    ).then((results) => {
       if (isMounted) {
         setConcerts(results);
         setLoading(false);
       }
-    }, SEARCH_DEBOUNCE_MS);
+    });
 
     return () => {
       isMounted = false;
-      clearTimeout(timer);
     };
-  }, [query]);
+  }, [debouncedQuery, suggestions.length, suggestionsLoading]);
+
+  const suggestionConcerts: Concert[] = suggestions
+    .filter((s): s is { kind: 'event'; item: any } => s.kind === 'event')
+    .map((s) => mapEvents([s.item])[0]);
+  const showSuggestionGrid = suggestions.length > 0 || suggestionsLoading;
+  const gridConcerts = showSuggestionGrid ? suggestionConcerts : concerts;
 
   // Handler for linking a Spotify account from an active session
   const handleSpotifyLink = () => {
@@ -81,6 +98,15 @@ export function Home() {
   return (
     <main className="min-h-screen bg-black text-white font-sans p-6">
       <div className="max-w-6xl mx-auto w-full">
+        <header className="border-b border-line pb-6 mb-8">
+          <h1>Concert Finder 🐴</h1>
+          <Navbar
+            query={query}
+            onSearch={setQuery}
+            onSuggestionsChange={handleSuggestionsChange}
+          />
+        </header>
+        {loading || suggestionsLoading ? (
         <header className="border-b border-line pb-6 mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div className="w-full md:w-auto">
             <h1 className="text-2xl font-bold mb-4">Concert Finder 🐴</h1>
@@ -111,14 +137,14 @@ export function Home() {
           <div className="text-center py-10 font-mono text-gray-400">
             Looking for real concerts...
           </div>
-        ) : concerts.length === 0 ? (
+        ) : gridConcerts.length === 0 ? (
           <div className="text-center py-10 font-mono text-gray-500">
             {query.trim()
               ? `No concerts were found for "${query}".`
               : 'No recommended concerts available at the moment.'}
           </div>
         ) : (
-          <ConcertGrid concerts={concerts} />
+          <ConcertGrid concerts={gridConcerts} />
         )}
       </div>
     </main>

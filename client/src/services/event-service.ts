@@ -1,6 +1,7 @@
 import { readCache, writeCache } from './cache';
 import { INITIAL_MOCK_CONCERTS } from '../mocks/concerts.mock';
-import { fetchMusicEvents, mapEvents } from './ticketmaster';
+import { fetchMusicEvents, fetchMusicEventsByAttraction,
+  fetchMusicSuggestions, eventMatchesByArtistOrTitle, mapEvents } from './ticketmaster';
 import type { Concert } from '../types/concert';
 
 const CACHE_KEY = 'recommended_concerts_cache';
@@ -23,12 +24,41 @@ export async function getRecommendedEvents(): Promise<Concert[]> {
 }
 
 export async function searchEvents(query: string): Promise<Concert[]> {
-  if (!query.trim()) return [];
+  const q = query.trim();
+  if (!q) return [];
 
   try {
-    return mapEvents(await fetchMusicEvents(query));
+    const suggestions = await fetchMusicSuggestions(q);
+
+    const attractionEvents = await Promise.all(
+      suggestions.attractions
+        .slice(0, 2)
+        .map((attraction) => fetchMusicEventsByAttraction(attraction.id))
+    );
+
+    const events = [
+      ...suggestions.events,
+      ...attractionEvents.flat(),
+    ];
+
+    const filtered = events.filter((e) => eventMatchesByArtistOrTitle(e, q));
+
+    const uniqueEvents = [
+      ...new Map(filtered.map((event) => [event.id, event])).values(),
+    ];
+
+    return mapEvents(uniqueEvents).slice(0, 12);
   } catch (error) {
-    console.error('Error al consultar eventos:', error);
-    return [];
+    console.error(
+      'The suggestion endpoint has failed',
+      error
+    );
+
+    try {
+      return mapEvents(await fetchMusicEvents(q));
+    } catch (fallbackError) {
+      console.error('Event searching has failed', fallbackError);
+      return [];
+    }
   }
 }
