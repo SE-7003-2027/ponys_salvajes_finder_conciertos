@@ -76,11 +76,7 @@ git clone https://github.com/SE-7003-2027/ponys_salvajes_finder_conciertos.git
 cd ponys_salvajes_finder_conciertos
 ```
 
-2. **Install dependencies:**
-Install the required packages by running:
-npm install or pnpm install if you are using pnpm
-
-3. **Environment Variables:** 
+2. **Environment Variables:** 
 The client and the server each have their own `.env`. Copy the examples and fill in your values:
    ```bash
    cp client/.env.example client/.env
@@ -91,7 +87,7 @@ The client and the server each have their own `.env`. Copy the examples and fill
 
    Note: never commit these files. `.env` is already listed in `.gitignore`.
 
-4. **Run the server and the client** (in two terminals):
+3. **Run the server and the client** (in two terminals):
    ```bash
    cd server && npm install && npm run dev   # API on http://localhost:3000
    cd client && npm install && npm run dev   # app on http://127.0.0.1:5173
