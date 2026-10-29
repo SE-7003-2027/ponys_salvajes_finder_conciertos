@@ -2,7 +2,9 @@ import type { Artist } from '../types/artist';
 import type { Concert } from '../types/concert';
 import { fetchAttraction, fetchMusicEvents, mapEvents } from './ticketmaster';
 
-export async function getArtistProfile(artistId: string): Promise<{ artist: Artist; events: Concert[] } | null> {
+export async function getArtistProfile(
+  artistId: string
+): Promise<{ artist: Artist; events: Concert[] } | null> {
   const artist = await getArtistById(artistId);
   if (!artist) return null;
 

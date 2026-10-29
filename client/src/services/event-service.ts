@@ -30,7 +30,7 @@ export async function getRecommendedEvents(): Promise<Concert[]> {
 
     return concerts;
   } catch (error) {
-    console.warn('Suggested events has failed', error);
+    console.warn('Falló la carga de recomendados en vivo, usando mocks:', error);
     return INITIAL_MOCK_CONCERTS;
   }
 }
