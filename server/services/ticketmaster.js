@@ -1,14 +1,9 @@
 const { fetchJson, UpstreamError } = require('../lib/fetch-json');
 const { HttpError } = require('../lib/http-error');
+const { extractSpotifyArtistId } = require('../lib/music-utils');
 
 const BASE_URL = 'https://app.ticketmaster.com/discovery/v2';
-const SPOTIFY_ARTIST_URL = /open\.spotify\.com\/(?:intl-[a-z-]+\/)?artist\/([A-Za-z0-9]{22})/;
 const MUSICBRAINZ_ID = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i;
-
-function extractSpotifyArtistId(url) {
-  const match = SPOTIFY_ARTIST_URL.exec(String(url ?? ''));
-  return match ? match[1] : null;
-}
 
 function extractMusicbrainzId(link) {
   const match = MUSICBRAINZ_ID.exec(`${link?.id ?? ''} ${link?.url ?? ''}`);

@@ -69,10 +69,60 @@ describe('getArtistMusic', () => {
     assert.equal(music.discography.source, 'musicbrainz');
   });
 
-  it('without known ids: links a Spotify search and finds the artist on MusicBrainz by name', async () => {
+  it('without Ticketmaster links: takes the Spotify id from MusicBrainz, so the player works', async () => {
     mockFetch({
       'app.ticketmaster.com': { body: fixtures.attractionWithoutLinks },
       '/artist?': { body: { artists: [{ id: 'mb-beyonce', name: 'Beyoncé', score: 100 }] } },
+      'inc=url-rels': { body: fixtures.artistUrlRels },
+      '/release-group?': { body: fixtures.releaseGroups },
+    });
+
+    const music = await getArtistMusic('K8vZ917Gku7');
+
+    assert.equal(music.spotify.id, fixtures.SPOTIFY_ID);
+    assert.equal(music.spotify.embedUrl, `https://open.spotify.com/embed/artist/${fixtures.SPOTIFY_ID}`);
+    assert.equal(music.discography.source, 'musicbrainz');
+  });
+
+  it('looks up MusicBrainz only once per artist', async () => {
+    const calls = mockFetch({
+      'app.ticketmaster.com': { body: fixtures.attractionWithoutLinks },
+      '/artist?': { body: { artists: [{ id: 'mb-beyonce', name: 'Beyoncé', score: 100 }] } },
+      'inc=url-rels': { body: { relations: [] } },
+      '/release-group?': { body: fixtures.releaseGroups },
+    });
+
+    await getArtistMusic('K8vZ917Gku7');
+
+    assert.equal(calls.filter((url) => url.includes('/artist?')).length, 1);
+  });
+
+  it('keeps the albums when an artist has many recent singles', async () => {
+    const singles = Array.from({ length: 50 }, (_, index) => ({
+      id: `single-${index}`,
+      title: `Single ${index}`,
+      'primary-type': 'Single',
+      'secondary-types': [],
+      'first-release-date': `${2025 - (index % 5)}-01-01`,
+    }));
+    mockFetch({
+      'app.ticketmaster.com': { body: fixtures.attractionWithLinks },
+      '/release-group?': { body: { 'release-groups': [...fixtures.releaseGroups['release-groups'], ...singles] } },
+    });
+
+    const music = await getArtistMusic('K8vZ9175rX7');
+    const titles = music.discography.releases.map((release) => release.title);
+
+    assert.ok(music.discography.releases.length <= 36);
+    assert.ok(titles.includes('Future Nostalgia'), 'older albums survive the limit');
+    assert.ok(titles.includes('Radical Optimism'));
+  });
+
+  it('without known ids anywhere: links a Spotify search and finds the artist on MusicBrainz by name', async () => {
+    mockFetch({
+      'app.ticketmaster.com': { body: fixtures.attractionWithoutLinks },
+      '/artist?': { body: { artists: [{ id: 'mb-beyonce', name: 'Beyoncé', score: 100 }] } },
+      'inc=url-rels': { body: { relations: [] } },
       '/release-group?': { body: fixtures.releaseGroups },
     });
 

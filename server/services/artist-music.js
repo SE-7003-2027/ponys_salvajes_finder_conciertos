@@ -2,8 +2,9 @@ const ticketmaster = require('./ticketmaster');
 const spotify = require('./spotify');
 const musicbrainz = require('./musicbrainz');
 const { createTtlCache } = require('../lib/ttl-cache');
+const { limitReleases } = require('../lib/music-utils');
 
-const MAX_RELEASES = 24;
+const MAX_RELEASES = 36;
 const CACHE_TTL_MS = 6 * 60 * 60 * 1000;
 const CACHE_TTL_EMPTY_MS = 10 * 60 * 1000; // retry sooner when providers returned nothing
 
@@ -40,29 +41,46 @@ async function attempt(label, task) {
   }
 }
 
-async function resolveSpotifyId(attraction) {
+/** Resolves the MusicBrainz id at most once per request, and only if needed. */
+function musicbrainzIdResolver(attraction) {
+  let pending = null;
+
+  return () => {
+    pending ??= attraction.musicbrainzId
+      ? Promise.resolve(attraction.musicbrainzId)
+      : attempt('MusicBrainz search', () => musicbrainz.searchArtistId(attraction.name));
+    return pending;
+  };
+}
+
+/** Ticketmaster link first, then a Spotify search (with credentials), then MusicBrainz links. */
+async function resolveSpotifyId(attraction, getMusicbrainzId) {
   if (attraction.spotifyId) return attraction.spotifyId;
-  if (!spotify.isConfigured()) return null;
-  return attempt('Spotify search', () => spotify.searchArtistId(attraction.name));
+
+  if (spotify.isConfigured()) {
+    const found = await attempt('Spotify search', () => spotify.searchArtistId(attraction.name));
+    if (found) return found;
+  }
+
+  const musicbrainzId = await getMusicbrainzId();
+  if (!musicbrainzId) return null;
+  return attempt('MusicBrainz Spotify link', () => musicbrainz.getSpotifyArtistId(musicbrainzId));
 }
 
 /** Spotify first (when configured), MusicBrainz as the keyless fallback. */
-async function loadDiscography(attraction, spotifyId) {
+async function loadDiscography(spotifyId, getMusicbrainzId) {
   if (spotifyId && spotify.isConfigured()) {
     const releases = await attempt('Spotify albums', () => spotify.getReleases(spotifyId));
     if (releases?.length) {
-      return { source: 'spotify', releases: releases.slice(0, MAX_RELEASES) };
+      return { source: 'spotify', releases: limitReleases(releases, MAX_RELEASES) };
     }
   }
 
-  const musicbrainzId =
-    attraction.musicbrainzId ??
-    (await attempt('MusicBrainz search', () => musicbrainz.searchArtistId(attraction.name)));
-
+  const musicbrainzId = await getMusicbrainzId();
   if (musicbrainzId) {
     const releases = await attempt('MusicBrainz releases', () => musicbrainz.getReleases(musicbrainzId));
     if (releases?.length) {
-      return { source: 'musicbrainz', releases: releases.slice(0, MAX_RELEASES) };
+      return { source: 'musicbrainz', releases: limitReleases(releases, MAX_RELEASES) };
     }
   }
 
@@ -79,8 +97,9 @@ async function getArtistMusic(attractionId) {
   if (cached) return cached;
 
   const attraction = await ticketmaster.getAttraction(attractionId);
-  const spotifyId = await resolveSpotifyId(attraction);
-  const discography = await loadDiscography(attraction, spotifyId);
+  const getMusicbrainzId = musicbrainzIdResolver(attraction);
+  const spotifyId = await resolveSpotifyId(attraction, getMusicbrainzId);
+  const discography = await loadDiscography(spotifyId, getMusicbrainzId);
 
   const music = {
     artistId: attraction.id,

@@ -1,5 +1,5 @@
 const { fetchJson } = require('../lib/fetch-json');
-const { normalizeName, parseYear, dedupeAndSort } = require('../lib/music-utils');
+const { normalizeName, parseYear, dedupeAndSort, extractSpotifyArtistId } = require('../lib/music-utils');
 
 const API_URL = 'https://musicbrainz.org/ws/2';
 const DEFAULT_USER_AGENT =
@@ -7,6 +7,9 @@ const DEFAULT_USER_AGENT =
 const DEFAULT_MIN_INTERVAL_MS = 1100; // MusicBrainz allows about 1 request per second
 const MIN_SEARCH_SCORE = 90;
 const INCLUDED_TYPES = new Set(['Album', 'EP', 'Single']);
+// Concert recordings are often filed as plain albums but titled with the show
+// date: "25th October 2025, Tokyo" or "2025-10-25: Tokyo Dome".
+const SHOW_DATE_TITLE = /^(\d{1,2}(st|nd|rd|th)?\s+[a-z]+\s+\d{4}\b|\d{4}-\d{2}-\d{2}\b)/i;
 
 let lastRequestAt = 0;
 let queue = Promise.resolve();
@@ -53,9 +56,23 @@ async function searchArtistId(name) {
   return match ? match.id : null;
 }
 
-/** Studio releases only: live albums, compilations and remixes are left out. */
+/**
+ * Looks up the artist's Spotify id in its MusicBrainz URL relationships,
+ * so the player works even when Ticketmaster has no Spotify link.
+ */
+async function getSpotifyArtistId(musicbrainzId) {
+  const data = await throttledGet(`/artist/${encodeURIComponent(musicbrainzId)}?inc=url-rels&fmt=json`);
+
+  return (data.relations ?? []).map((relation) => extractSpotifyArtistId(relation.url?.resource)).find(Boolean) ?? null;
+}
+
+/** Studio releases only: live albums, compilations, remixes and dated show recordings are left out. */
 function isStudioRelease(group) {
-  return INCLUDED_TYPES.has(group['primary-type']) && (group['secondary-types'] ?? []).length === 0;
+  return (
+    INCLUDED_TYPES.has(group['primary-type']) &&
+    (group['secondary-types'] ?? []).length === 0 &&
+    !SHOW_DATE_TITLE.test(group.title ?? '')
+  );
 }
 
 function mapReleaseGroup(group) {
@@ -75,6 +92,8 @@ async function getReleases(musicbrainzId) {
   const query = new URLSearchParams({
     artist: musicbrainzId,
     type: 'album|ep|single',
+    // Official releases only: leaves out bootlegs and other unofficial uploads
+    'release-group-status': 'website-default',
     limit: '100',
     fmt: 'json',
   });
@@ -83,4 +102,4 @@ async function getReleases(musicbrainzId) {
   return dedupeAndSort((data['release-groups'] ?? []).filter(isStudioRelease).map(mapReleaseGroup));
 }
 
-module.exports = { searchArtistId, getReleases, mapReleaseGroup, isStudioRelease };
+module.exports = { searchArtistId, getSpotifyArtistId, getReleases, mapReleaseGroup, isStudioRelease };

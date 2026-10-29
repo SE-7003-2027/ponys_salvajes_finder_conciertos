@@ -4,7 +4,7 @@ const assert = require('node:assert/strict');
 const ticketmaster = require('../services/ticketmaster');
 const spotify = require('../services/spotify');
 const musicbrainz = require('../services/musicbrainz');
-const { normalizeName, parseYear } = require('../lib/music-utils');
+const { normalizeName, parseYear, limitReleases } = require('../lib/music-utils');
 const { mockFetch } = require('./helpers/mock-fetch');
 const fixtures = require('./fixtures');
 
@@ -95,11 +95,13 @@ describe('spotify', () => {
 });
 
 describe('musicbrainz', () => {
-  it('keeps studio albums and singles, drops live and remix releases', async () => {
+  it('keeps studio albums and singles, drops live, remix and dated show releases', async () => {
     process.env.MUSICBRAINZ_MIN_INTERVAL_MS = '0';
-    mockFetch({ '/release-group?': { body: fixtures.releaseGroups } });
+    const calls = mockFetch({ '/release-group?': { body: fixtures.releaseGroups } });
 
     const releases = await musicbrainz.getReleases(fixtures.MUSICBRAINZ_ID);
+
+    assert.match(calls[0], /release-group-status=website-default/, 'asks for official releases only');
 
     assert.deepEqual(
       releases.map((release) => [release.title, release.year, release.type]),
@@ -124,5 +126,34 @@ describe('musicbrainz', () => {
 
     assert.equal(await musicbrainz.searchArtistId('Beyoncé'), 'mb-1');
     assert.match(userAgent, /ConcertFinder/);
+  });
+
+  it('finds the Spotify artist id among the URL relationships', async () => {
+    process.env.MUSICBRAINZ_MIN_INTERVAL_MS = '0';
+    mockFetch({ 'inc=url-rels': { body: fixtures.artistUrlRels } });
+
+    assert.equal(await musicbrainz.getSpotifyArtistId(fixtures.MUSICBRAINZ_ID), fixtures.SPOTIFY_ID);
+  });
+
+  it('returns null when the artist has no Spotify link', async () => {
+    process.env.MUSICBRAINZ_MIN_INTERVAL_MS = '0';
+    mockFetch({ 'inc=url-rels': { body: { relations: [] } } });
+
+    assert.equal(await musicbrainz.getSpotifyArtistId(fixtures.MUSICBRAINZ_ID), null);
+  });
+});
+
+describe('limitReleases', () => {
+  it('keeps every album before filling with singles, newest first', () => {
+    const releases = [
+      { title: 'New single', type: 'single', year: 2025 },
+      { title: 'Another single', type: 'single', year: 2024 },
+      { title: 'Old album', type: 'album', year: 1994 },
+    ];
+
+    assert.deepEqual(
+      limitReleases(releases, 2).map((release) => release.title),
+      ['New single', 'Old album']
+    );
   });
 });

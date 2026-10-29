@@ -31,7 +31,31 @@ function dedupeAndSort(releases) {
     return true;
   });
 
-  return unique.sort((a, b) => (b.year ?? -Infinity) - (a.year ?? -Infinity));
+  return unique.sort(byNewestFirst);
 }
 
-module.exports = { normalizeName, parseYear, dedupeAndSort };
+function byNewestFirst(a, b) {
+  return (b.year ?? -Infinity) - (a.year ?? -Infinity);
+}
+
+/**
+ * Keeps at most `max` releases without losing the albums: prolific artists
+ * have dozens of recent singles that would otherwise push their classic
+ * albums out of the list. Albums go in first, singles and EPs fill the rest.
+ */
+function limitReleases(releases, max) {
+  const albums = releases.filter((release) => release.type === 'album').slice(0, max);
+  const others = releases.filter((release) => release.type !== 'album').slice(0, max - albums.length);
+
+  return [...albums, ...others].sort(byNewestFirst);
+}
+
+const SPOTIFY_ARTIST_URL = /open\.spotify\.com\/(?:intl-[a-z-]+\/)?artist\/([A-Za-z0-9]{22})/;
+
+/** Returns the artist id of an open.spotify.com artist URL, or null. */
+function extractSpotifyArtistId(url) {
+  const match = SPOTIFY_ARTIST_URL.exec(String(url ?? ''));
+  return match ? match[1] : null;
+}
+
+module.exports = { normalizeName, parseYear, dedupeAndSort, limitReleases, extractSpotifyArtistId };

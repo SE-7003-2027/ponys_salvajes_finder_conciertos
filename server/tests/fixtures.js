@@ -24,6 +24,17 @@ const releaseGroups = {
     { id: 'rg-3', title: 'Club Future Nostalgia', 'primary-type': 'Album', 'secondary-types': ['Remix'], 'first-release-date': '2020-08-28' },
     { id: 'rg-4', title: 'Live at Wembley', 'primary-type': 'Album', 'secondary-types': ['Live'], 'first-release-date': '2022-01-01' },
     { id: 'rg-5', title: 'Be the One', 'primary-type': 'Single', 'secondary-types': [], 'first-release-date': '2015' },
+    { id: 'rg-6', title: '25th October 2025, Tokyo Dome', 'primary-type': 'Album', 'secondary-types': [], 'first-release-date': '2025-11-01' },
+    { id: 'rg-7', title: '2025-07-04: Heaton Park', 'primary-type': 'Album', 'secondary-types': [], 'first-release-date': '2025-07-10' },
+  ],
+};
+
+/** MusicBrainz artist lookup with URL relationships (inc=url-rels). */
+const artistUrlRels = {
+  id: MUSICBRAINZ_ID,
+  relations: [
+    { type: 'official homepage', url: { resource: 'https://www.dualipa.com/' } },
+    { type: 'free streaming', url: { resource: `https://open.spotify.com/artist/${SPOTIFY_ID}` } },
   ],
 };
 
@@ -66,5 +77,6 @@ module.exports = {
   attractionWithLinks,
   attractionWithoutLinks,
   releaseGroups,
+  artistUrlRels,
   spotifyAlbums,
 };
