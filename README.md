@@ -64,7 +64,7 @@ Detailed planning is documented in [`USM.md`](/USM.md).
 
 ## How to run it
 **Requirements**
-* Node.js and a package manager: npm or pnpm.
+* Node.js 20 or newer and a package manager: npm or pnpm.
 * Git
 * Vite
 
@@ -77,26 +77,22 @@ cd ponys_salvajes_finder_conciertos
 ```
 
 2. **Environment Variables:** 
-Create .env files in both the client and server folders to store your local credentials (Such as Spotify API, Ticketmaster API, and PostgreSQL connections URIs)
-Note: Never commit this file,Make sure .env is listed in your .gitignore
+The client and the server each have their own `.env`. Copy the examples and fill in your values:
+   ```bash
+   cp client/.env.example client/.env
+   cp server/.env.example server/.env
+   ```
+   * `TICKETMASTER_API_KEY` (server) and `VITE_TICKETMASTER_API_KEY` (client): your [Ticketmaster Discovery API](https://developer.ticketmaster.com/) key.
+   * `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET`, `SPOTIFY_REDIRECT_URI` and `ENCRYPTION_KEY` (server): the team's shared Spotify app credentials, needed for Spotify login and recommendations. They come in the `.env` files the team shares. The artist discography uses Spotify when the credentials are set and MusicBrainz otherwise.
 
-3. **Run the Backend (Server):**
-Open a terminal, navigate into the server directory, install the required packages, and start the node server:
-```bash
-cd server
-npm init -y
-npm install express pg bcrypt jsonwebtoken cors dotenv
-node server.js
-```
+   Note: never commit these files. `.env` is already listed in `.gitignore`.
 
-4. **Run the development server (Frontend):**
-Open a new terminal, navigate into the client directory, and start the local environment by running:
-```bash
-cd client
-npm install
-npm run dev
-```
-This application will be available in your browser
+3. **Run the server and the client** (in two terminals):
+   ```bash
+   cd server && npm install && npm run dev   # API on http://localhost:3000
+   cd client && npm install && npm run dev   # app on http://127.0.0.1:5173
+   ```
+   Run the server tests with `cd server && npm test`.
 
 ## Documentation
 

@@ -4,11 +4,15 @@ const { Pool } = require('pg');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
+const artistsRouter = require('./routes/artists');
 const crypto = require('crypto'); // Native Node.js module for encryption
 
 const app = express();
 app.use(express.json()); // Parse incoming JSON requests
 app.use(cors()); // Enable Cross-Origin Resource Sharing
+
+// Artist music: Spotify link, player and discography
+app.use('/api/artists', artistsRouter);
 
 // Database connection pool setup using environment variables
 const pool = new Pool({
@@ -283,6 +287,10 @@ app.get('/api/spotify/top-artists', async (req, res) => {
   }
 });
 
-// Start the Express server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// Start the server only when run directly, so tests can import the app
+if (require.main === module) {
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+}
+
+module.exports = app;
