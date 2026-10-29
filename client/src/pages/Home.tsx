@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Navbar } from '../components/Navbar';
 import { ConcertGrid } from '../components/ConcertGrid';
+import { PersonalizedRecommendations } from '../components/PersonalizedRecommendations';
 import { getRecommendedEvents, searchEvents } from '../services/event-service';
 import type { Concert } from '../types/concert';
 
@@ -100,6 +101,10 @@ export function Home() {
             </button>
           )}
         </header>
+
+        <PersonalizedRecommendations
+          isSearching={query.trim().length >= MIN_QUERY_LENGTH}
+        />
 
         {loading ? (
           <div className="text-center py-10 font-mono text-gray-400">
