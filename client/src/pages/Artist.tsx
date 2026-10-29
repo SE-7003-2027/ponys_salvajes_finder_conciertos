@@ -1,15 +1,26 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getArtistProfile } from '../services/artist-service';
-import type { Artist as ArtistType } from '../types/artist';
+import { getArtistMusic, getArtistProfile } from '../services/artist-service';
+import type { Artist as ArtistType, ArtistMusic } from '../types/artist';
 import type { Concert } from '../types/concert';
 import { ConcertGrid } from '../components/ConcertGrid';
+import { SpotifyButton } from '../components/SpotifyButton';
+import { ArtistMusicSection, type ArtistMusicState } from '../components/ArtistMusicSection';
 
 export function Artist() {
   const { id } = useParams();
   const [artist, setArtist] = useState<ArtistType | null>(null);
   const [events, setEvents] = useState<Concert[]>([]);
   const [loading, setLoading] = useState(true);
+  const [musicResult, setMusicResult] = useState<{ artistId: string; music: ArtistMusic | null } | null>(null);
+
+  // Derived instead of reset in the effect: a result for another artist means "still loading"
+  const musicState: ArtistMusicState =
+    !musicResult || musicResult.artistId !== id
+      ? { status: 'loading' }
+      : musicResult.music
+        ? { status: 'ready', music: musicResult.music }
+        : { status: 'unavailable' };
 
   useEffect(() => {
     async function loadProfile() {
@@ -27,6 +38,20 @@ export function Artist() {
     }
 
     loadProfile();
+  }, [id]);
+
+  // Loaded separately so concerts never wait on (or break because of) music providers
+  useEffect(() => {
+    if (!id) return;
+    let isMounted = true;
+
+    getArtistMusic(id).then((music) => {
+      if (isMounted) setMusicResult({ artistId: id, music });
+    });
+
+    return () => {
+      isMounted = false;
+    };
   }, [id]);
 
   if (loading) {
@@ -70,6 +95,11 @@ export function Artist() {
               {artist.bio}
             </p>
           )}
+          {musicState.status === 'ready' && (
+            <div className="mt-6">
+              <SpotifyButton spotify={musicState.music.spotify} />
+            </div>
+          )}
         </header>
 
         <section>
@@ -82,6 +112,8 @@ export function Artist() {
             <ConcertGrid concerts={events} />
           )}
         </section>
+
+        <ArtistMusicSection state={musicState} />
       </div>
     </main>
   );

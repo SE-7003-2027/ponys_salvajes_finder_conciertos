@@ -1,6 +1,19 @@
-import type { Artist } from '../types/artist';
+import type { Artist, ArtistMusic } from '../types/artist';
 import type { Concert } from '../types/concert';
+import { getJson } from './http';
 import { fetchAttraction, fetchMusicEvents, mapEvents } from './ticketmaster';
+
+/**
+ * Spotify link, player and discography for an artist, served by our API.
+ * Returns null when it is unavailable so the page can still show concerts.
+ */
+export async function getArtistMusic(artistId: string): Promise<ArtistMusic | null> {
+  try {
+    return await getJson<ArtistMusic>(`/api/artists/${encodeURIComponent(artistId)}/music`);
+  } catch {
+    return null;
+  }
+}
 
 export async function getArtistProfile(
   artistId: string
