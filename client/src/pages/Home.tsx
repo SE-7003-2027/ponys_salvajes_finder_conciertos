@@ -12,7 +12,7 @@ export function Home() {
   const [concerts, setConcerts] = useState<Concert[]>([]);
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(true);
-  
+
   // State to track if the current user has already linked their Spotify account
   const [isSpotifyLinked, setIsSpotifyLinked] = useState(false);
 
@@ -26,7 +26,7 @@ export function Home() {
         const response = await fetch('http://localhost:3000/api/account/status', {
           headers: { Authorization: `Bearer ${token}` }
         });
-        
+
         if (response.ok) {
           const data = await response.json();
           setIsSpotifyLinked(data.isSpotifyLinked);
@@ -69,12 +69,12 @@ export function Home() {
     const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
     const redirectUri = 'http://127.0.0.1:5173/spotify/callback';
     const scope = 'user-read-private user-read-email user-top-read';
-    
+
     // We add state=link to differentiate this action from a standard login
     const state = 'link';
-    
+
     const authUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=code&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${encodeURIComponent(scope)}&state=${state}`;
-    
+
     window.location.href = authUrl;
   };
 
@@ -86,7 +86,7 @@ export function Home() {
             <h1 className="text-2xl font-bold mb-4">Concert Finder 🐴</h1>
             <Navbar query={query} onSearch={setQuery} />
           </div>
-          
+
           {/* Conditional rendering based on Spotify connection status */}
           {isSpotifyLinked ? (
             <div className="px-4 py-2 rounded-lg bg-[#1DB954]/20 border border-[#1DB954] text-[#1DB954] font-bold text-sm flex items-center gap-2">
@@ -103,6 +103,7 @@ export function Home() {
         </header>
 
         <PersonalizedRecommendations
+          enabled={isSpotifyLinked}
           isSearching={query.trim().length >= MIN_QUERY_LENGTH}
         />
 

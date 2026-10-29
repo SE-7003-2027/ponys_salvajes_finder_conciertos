@@ -1,6 +1,7 @@
-import { INITIAL_MOCK_ARTISTS } from '../mocks/spotifyArtists.mock';
+import { getJson } from './http';
 import type { SpotifyArtist } from '../types/spotifyArtist';
 
 export async function getTopArtists(): Promise<SpotifyArtist[]> {
-  return INITIAL_MOCK_ARTISTS
+  const data = await getJson<{ artists: SpotifyArtist[] }>('/api/spotify/top-artists');
+  return data.artists;
 }
