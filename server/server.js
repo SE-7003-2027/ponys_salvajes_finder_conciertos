@@ -4,10 +4,14 @@ const { Pool } = require('pg');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
+const artistsRouter = require('./routes/artists');
 
 const app = express();
 app.use(express.json()); // Parse incoming JSON requests
 app.use(cors()); // Enable Cross-Origin Resource Sharing
+
+// Artist music: Spotify link, player and discography
+app.use('/api/artists', artistsRouter);
 
 // Database connection pool
 const pool = new Pool({
