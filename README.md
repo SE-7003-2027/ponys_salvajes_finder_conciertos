@@ -87,7 +87,7 @@ The client and the server each have their own `.env`. Copy the examples and fill
    cp server/.env.example server/.env
    ```
    * `TICKETMASTER_API_KEY` (server) and `VITE_TICKETMASTER_API_KEY` (client): your [Ticketmaster Discovery API](https://developer.ticketmaster.com/) key.
-   * `SPOTIFY_CLIENT_ID` and `SPOTIFY_CLIENT_SECRET` (server, optional): credentials of a Spotify app. Without them the artist discography comes from MusicBrainz, and the Spotify button and player still work. Creating a Spotify app in development mode requires a Spotify Premium account.
+   * `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET`, `SPOTIFY_REDIRECT_URI` and `ENCRYPTION_KEY` (server): the team's shared Spotify app credentials, needed for Spotify login and recommendations. They come in the `.env` files the team shares. The artist discography uses Spotify when the credentials are set and MusicBrainz otherwise.
 
    Note: never commit these files. `.env` is already listed in `.gitignore`.
 
