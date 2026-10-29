@@ -32,8 +32,6 @@ export function PersonalizedRecommendations({
     if (!enabled || isSearching) return;
 
     let active = true;
-    setLoading(true);
-    setFailed(false);
 
     getPersonalizedRecommendations()
       .then((result) => {
@@ -44,7 +42,7 @@ export function PersonalizedRecommendations({
       })
       .catch(() => {
         if (!active) return;
-        setFailed(true);
+        setFailed(false);
         setLoading(false);
       });
 
