@@ -21,7 +21,7 @@ export function Login() {
     }
   }, [navigate]);
 
-  // Function to handle form submission
+  // Function to handle standard email/password form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); // Prevents the default page reload on form submit
     setErrorMessage(''); // Clears any previous error messages
@@ -38,12 +38,25 @@ export function Login() {
     }
   };
 
+  // Function to handle Spotify OAuth redirection
+  const handleSpotifyLogin = () => {
+    const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
+    const redirectUri = 'http://127.0.0.1:5173/spotify/callback';
+    const scope = 'user-read-private user-read-email user-top-read';
+    
+    // Construct the Spotify authorization URL
+    const authUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=code&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${encodeURIComponent(scope)}`;
+    
+    // Redirect the user to the Spotify login page
+    window.location.href = authUrl;
+  };
+
   return (
     <div className="flex justify-center items-center min-h-screen bg-black text-white font-sans p-4">
       <div className="bg-surface border border-line text-white p-8 rounded-xl shadow-2xl w-full max-w-sm flex flex-col gap-6">
         <h2 className="text-2xl font-bold text-center tracking-tight">Log In 🐴</h2>
 
-        {/* Login Form */}
+        {/* Standard Login Form */}
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           {errorMessage && (
             <p className="text-red-400 text-xs text-center font-medium">{errorMessage}</p>
@@ -74,6 +87,21 @@ export function Login() {
             Log In
           </button>
         </form>
+
+        {/* Divider */}
+        <div className="flex items-center gap-2 my-2">
+          <div className="flex-1 border-t border-line"></div>
+          <span className="text-xs text-gray-400 uppercase font-semibold tracking-wider">or</span>
+          <div className="flex-1 border-t border-line"></div>
+        </div>
+
+        {/* Spotify Login Button */}
+        <button
+          onClick={handleSpotifyLogin}
+          className="w-full p-3 rounded-lg bg-[#1DB954] hover:bg-[#1ed760] text-black font-bold text-sm cursor-pointer transition-colors shadow-md flex justify-center items-center gap-2"
+        >
+          Continue with Spotify
+        </button>
 
         {/* Navigation link to the Registration page */}
         <div className="border-t border-line pt-4 text-center">

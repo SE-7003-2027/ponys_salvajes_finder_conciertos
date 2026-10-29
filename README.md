@@ -71,20 +71,31 @@ Detailed planning is documented in [`USM.md`](/USM.md).
 **Setup Instructions** 
 1. **Clone the repository:**
 Open your terminal and run:
-git clone [https://github.com/SE-7003-2027/ponys_salvajes_finder_conciertos.git](https://github.com/SE-7003-2027/ponys_salvajes_finder_conciertos.git)
-   cd ponys_salvajes_finder_conciertos
+```bash
+git clone https://github.com/SE-7003-2027/ponys_salvajes_finder_conciertos.git
+cd ponys_salvajes_finder_conciertos
+```
 
-2. **Install dependencies:**
-Install the required packages by running:
-npm install or pnpm install if you are using pnpm
-
-3. **Environment Variables:** 
-Create a .env file in the root directory to store your local credentials (Such as Spotify API, Ticketmaster API, and PostgreSQL connections URIs)
+2. **Environment Variables:** 
+Create .env files in both the client and server folders to store your local credentials (Such as Spotify API, Ticketmaster API, and PostgreSQL connections URIs)
 Note: Never commit this file,Make sure .env is listed in your .gitignore
 
-4. **Run the development server:**
-Start the local environment by running: 
-npm run dev  
+3. **Run the Backend (Server):**
+Open a terminal, navigate into the server directory, install the required packages, and start the node server:
+```bash
+cd server
+npm init -y
+npm install express pg bcrypt jsonwebtoken cors dotenv
+node server.js
+```
+
+4. **Run the development server (Frontend):**
+Open a new terminal, navigate into the client directory, and start the local environment by running:
+```bash
+cd client
+npm install
+npm run dev
+```
 This application will be available in your browser
 
 ## Documentation

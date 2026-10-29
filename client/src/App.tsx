@@ -3,6 +3,7 @@ import { Home } from './pages/Home';
 import { Artist } from './pages/Artist';
 import { Login } from './pages/Login';
 import { Register } from './pages/Register';
+import { SpotifyCallback } from './pages/SpotifyCallback';
 
 export function App() {
   return (
@@ -13,6 +14,9 @@ export function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/artist/:id" element={<Artist />} />
         <Route path="/login" element={<Login />} />
+        
+        {/* New route to handle the redirect from Spotify */}
+        <Route path="/spotify/callback" element={<SpotifyCallback />} />
       </Routes>
     </BrowserRouter>
   );
