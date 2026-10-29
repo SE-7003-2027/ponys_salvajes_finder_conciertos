@@ -19,7 +19,11 @@ async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
 }
 
 export function getJson<T>(path: string): Promise<T> {
-  return request<T>(path);
+  const token = localStorage.getItem('token');
+
+  return request<T>(path, {
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  });
 }
 
 export function postJson<T>(path: string, body: unknown): Promise<T> {

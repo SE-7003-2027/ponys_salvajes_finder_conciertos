@@ -71,8 +71,10 @@ Detailed planning is documented in [`USM.md`](/USM.md).
 **Setup Instructions** 
 1. **Clone the repository:**
 Open your terminal and run:
-git clone [https://github.com/SE-7003-2027/ponys_salvajes_finder_conciertos.git](https://github.com/SE-7003-2027/ponys_salvajes_finder_conciertos.git)
-   cd ponys_salvajes_finder_conciertos
+```bash
+git clone https://github.com/SE-7003-2027/ponys_salvajes_finder_conciertos.git
+cd ponys_salvajes_finder_conciertos
+```
 
 2. **Install dependencies:**
 Install the required packages by running:
@@ -92,7 +94,7 @@ The client and the server each have their own `.env`. Copy the examples and fill
 4. **Run the server and the client** (in two terminals):
    ```bash
    cd server && npm install && npm run dev   # API on http://localhost:3000
-   cd client && npm install && npm run dev   # app on http://localhost:5173
+   cd client && npm install && npm run dev   # app on http://127.0.0.1:5173
    ```
    Run the server tests with `cd server && npm test`.
 
