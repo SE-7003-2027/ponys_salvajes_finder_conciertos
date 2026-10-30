@@ -33,6 +33,18 @@ export function Register() {
     }
   };
 
+  // Handler to redirect the user to Spotify for registration/login
+  const handleSpotifyRegister = () => {
+    const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
+    const redirectUri = 'http://127.0.0.1:5173/spotify/callback';
+    const scope = 'user-read-private user-read-email user-top-read';
+    
+    // Construct Spotify OAuth URL
+    const authUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=code&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${encodeURIComponent(scope)}`;
+    
+    window.location.href = authUrl;
+  };
+
   return (
     <div className="flex justify-center items-center min-h-screen bg-black text-white font-sans p-4">
       <div className="bg-surface border border-line text-white p-8 rounded-xl shadow-2xl w-full max-w-sm flex flex-col gap-6">
@@ -53,55 +65,72 @@ export function Register() {
           </div>
         ) : (
           /* Conditional Rendering: Show the form if not yet registered */
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            {errorMessage && (
-              <p className="text-red-400 text-xs text-center font-medium">{errorMessage}</p>
-            )}
+          <>
+            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+              {errorMessage && (
+                <p className="text-red-400 text-xs text-center font-medium">{errorMessage}</p>
+              )}
 
-            <div className="flex gap-4">
+              <div className="flex gap-4">
+                <TextField
+                  id="firstName"
+                  label="First Name"
+                  placeholder="John"
+                  value={firstName}
+                  onChange={setFirstName}
+                  className="w-1/2"
+                />
+                <TextField
+                  id="lastName"
+                  label="Last Name"
+                  placeholder="Doe"
+                  value={lastName}
+                  onChange={setLastName}
+                  className="w-1/2"
+                />
+              </div>
+
               <TextField
-                id="firstName"
-                label="First Name"
-                placeholder="John"
-                value={firstName}
-                onChange={setFirstName}
-                className="w-1/2"
+                id="email"
+                label="Email address"
+                type="email"
+                placeholder="example@email.com"
+                value={email}
+                onChange={setEmail}
               />
+
               <TextField
-                id="lastName"
-                label="Last Name"
-                placeholder="Doe"
-                value={lastName}
-                onChange={setLastName}
-                className="w-1/2"
+                id="password"
+                label="Password"
+                type="password"
+                placeholder="••••••••"
+                value={password}
+                onChange={setPassword}
               />
+
+              <button
+                type="submit"
+                className="mt-2 p-3 rounded-lg bg-brand hover:bg-brand-hover text-white font-semibold text-sm cursor-pointer transition-colors shadow-md"
+              >
+                Sign Up
+              </button>
+            </form>
+
+            {/* Divider */}
+            <div className="flex items-center gap-2 my-2">
+              <div className="flex-1 border-t border-line"></div>
+              <span className="text-xs text-gray-400 uppercase font-semibold tracking-wider">or</span>
+              <div className="flex-1 border-t border-line"></div>
             </div>
 
-            <TextField
-              id="email"
-              label="Email address"
-              type="email"
-              placeholder="example@email.com"
-              value={email}
-              onChange={setEmail}
-            />
-
-            <TextField
-              id="password"
-              label="Password"
-              type="password"
-              placeholder="••••••••"
-              value={password}
-              onChange={setPassword}
-            />
-
+            {/* Spotify Sign Up Button */}
             <button
-              type="submit"
-              className="mt-2 p-3 rounded-lg bg-brand hover:bg-brand-hover text-white font-semibold text-sm cursor-pointer transition-colors shadow-md"
+              onClick={handleSpotifyRegister}
+              className="w-full p-3 rounded-lg bg-[#1DB954] hover:bg-[#1ed760] text-black font-bold text-sm cursor-pointer transition-colors shadow-md flex justify-center items-center gap-2"
             >
-              Sign Up
+              Sign up with Spotify
             </button>
-          </form>
+          </>
         )}
 
         {/* Hide the login link if the user has successfully registered */}
