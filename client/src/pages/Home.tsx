@@ -18,12 +18,12 @@ export function Home() {
   const [suggestions, setSuggestions] = useState<SearchSuggestion[]>([]);
   const [suggestionsLoading, setSuggestionsLoading] = useState(false);
   const debouncedQuery = useDebounce(query, SEARCH_DEBOUNCE_MS);
-  
+
   const handleSuggestionsChange = useCallback(
     (next: SearchSuggestion[], isLoading: boolean) => {
       setSuggestions(next);
       setSuggestionsLoading(isLoading);
-    },[],
+    }, [],
   );
 
   // State to track if the current user has already linked their Spotify account
@@ -98,19 +98,13 @@ export function Home() {
   return (
     <main className="min-h-screen bg-black text-white font-sans p-6">
       <div className="max-w-6xl mx-auto w-full">
-        <header className="border-b border-line pb-6 mb-8">
-          <h1>Concert Finder 🐴</h1>
-          <Navbar
-            query={query}
-            onSearch={setQuery}
-            onSuggestionsChange={handleSuggestionsChange}
-          />
-        </header>
-        {loading || suggestionsLoading ? (
         <header className="border-b border-line pb-6 mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div className="w-full md:w-auto">
             <h1 className="text-2xl font-bold mb-4">Concert Finder 🐴</h1>
-            <Navbar query={query} onSearch={setQuery} />
+            <Navbar
+              query={query}
+              onSearch={setQuery}
+              onSuggestionsChange={handleSuggestionsChange} />
           </div>
 
           {/* Conditional rendering based on Spotify connection status */}
@@ -133,7 +127,7 @@ export function Home() {
           isSearching={query.trim().length >= MIN_QUERY_LENGTH}
         />
 
-        {loading ? (
+        {loading || suggestionsLoading ? (
           <div className="text-center py-10 font-mono text-gray-400">
             Looking for real concerts...
           </div>
