@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { SaveToWishlistButton } from './SaveToWishlistButton';
 import type { Concert } from '../types/concert';
 
 interface ConcertCardProps {
@@ -6,6 +8,8 @@ interface ConcertCardProps {
 }
 
 export function ConcertCard({ concert }: ConcertCardProps) {
+  const [saved, setSaved] = useState(false);
+
   const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
     `${concert.venue}${concert.address || concert.city}`
   )}`;
@@ -57,6 +61,10 @@ export function ConcertCard({ concert }: ConcertCardProps) {
             {concert.priceRange}
           </p>
         )}
+        <SaveToWishlistButton
+          saved={saved}
+          onToggle={() => setSaved((value) => !value)}
+        />
       </div>
 
       <a
